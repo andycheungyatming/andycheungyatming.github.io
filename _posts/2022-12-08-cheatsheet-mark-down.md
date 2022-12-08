@@ -1,11 +1,12 @@
 ---
 layout: post
-title: Markdown Cheatsheet
-subtitle: To quickly recap all command I need to write markdown
-tags: [cheatsheet, markdown]
-comments: true
-cover-img: assets/img/Markdown-cheatsheet.png
-thumbnail-img: assets/img/175px-Markdown-mark.svg.png
+title: "Markdown Cheatsheet"
+author: "Allan Chan"
+header-style: text
+catalog: true
+tags: 
+    - cheatsheet
+    - markdown
 ---
 This is a very simple markdown cheatsheet for me to recap all command and syntax to write a markdown file.
 
