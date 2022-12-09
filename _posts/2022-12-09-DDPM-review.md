@@ -38,9 +38,15 @@ $$ x_T \rarr x_{T-1} = u(x_T) \rarr x_{T-2} = u(x_{T-1}) \rarr ... \rarr x_1 = u
 
 ## Destruction (Forward process)
 I'd like to use destruction instead of forward process. Basically we want to make a image (with pattern) to a pure gaussian noise by putting more gaussian noise recursively (with a fixed number of steps). 
-Let 
+
+Each step can be defined as following formulas 
+$$
+x_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \text{where } \epsilon\sim \boldsymbol{N}(0, \boldsymbol{I})
+$$
+
+where
 $$ \alpha_t + \beta_t = 1 $$
-and 
+and let 
 $$ \bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
 , we have 
 
@@ -55,3 +61,4 @@ q(\mathbf{x}_t \vert \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alph
 \end{aligned}
 $$
 
+Here, [Reparameterization Trick]() is applied. For more detail, please refer to the link captioned.
