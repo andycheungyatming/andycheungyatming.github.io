@@ -38,6 +38,7 @@ $$
 $$
 
 Now we use normal distribution (as nice propety applied) and define 
+
 $$
 \begin{aligned}
     x \sim \boldsymbol{N}(\mu, \sigma^2)\\
@@ -50,6 +51,8 @@ Therefore, we can have
 $$ g'(y) = \sigma $$
  and apply the gaussian density function 
 $$ \boldsymbol{N(g(y)|\mu,\sigma^2)} = \frac{1}{\sqrt{2\pi\sigma^2}}exp(-\frac{1}{2\sigma^2}(g(y)-\mu)^2) $$
+
+s.t.
 
 $$
 \begin{aligned}
