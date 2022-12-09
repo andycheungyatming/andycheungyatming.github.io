@@ -1,6 +1,6 @@
 ---
 layout:       post
-title:        "Review: Denoising Diffusion Probabilistic Models (DDPM)"
+title: "Reparameterization Trick"
 author:       "Allan"
 header-style: text
 catalog:      true
