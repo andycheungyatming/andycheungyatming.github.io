@@ -88,3 +88,11 @@ x &= g_\theta(\epsilon) \\
 $$
 
 By this method, we can now compute the gradient.
+
+# Remark
+Andy said an non differentiable function cannot be differentiable by change of variable due to regularity.
+
+In paper VAE [(Kingma et. al, 2013)](https://arxiv.org/abs/1312.6114) said reparameterization trick is used to generate a Monte Carlo estimater to estimate the gradient, which is no way to differentiate (although you know it is differentiable). 
+
+However, in deep learning we use back-propagation instead of taking sampling. The sampling steps for Monte Carlo estimator will not happen. So what is the real trick in VAE? 
+
