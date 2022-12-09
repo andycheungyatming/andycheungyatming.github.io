@@ -10,6 +10,8 @@ tags:
     - Diffusion
     - VAE
 ---
+
+### Need to be fixed, rewrite when learning VAE
 Refer to 
 ![Reparameterization Trick](https://kexue.fm/usr/uploads/2018/03/3543425351.png)
 Figure 1: Reparameterization Trick illustration
