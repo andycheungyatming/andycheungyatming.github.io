@@ -16,13 +16,15 @@ Figure 1: Reparameterization Trick illustration
 
 # Simple Example
 Assume we define 
+
 $$
-\begin{align}
+\begin{aligned}
     x \sim f_X(x)\\
     y = h(x);  \\
     x = g(y) = h^{-1}(y) \\
-\end{align}
+\end{aligned}
 $$
+
 where h is a strictly increasing continuously differentiable function
 
 Then we can have the desensity function 
@@ -30,18 +32,18 @@ $$ f_Y(y) $$
 as by change of variable
 
 $$
-\begin{align}
+\begin{aligned}
     f_Y(y) = f_X(x)|\frac{dx}{dy}| =f_X(g(y))g'(y)
-\end{align}
+\end{aligned}
 $$
 
 Now we use normal distribution (as nice propety applied) and define 
 $$
-\begin{align}
+\begin{aligned}
     x \sim \boldsymbol{N}(\mu, \sigma^2)\\
     y = h(x) = \frac{x-\mu}{\sigma}\\
     x = g(y) =\sigma y+\mu
-\end{align}
+\end{aligned}
 $$
 
 Therefore, we can have 
