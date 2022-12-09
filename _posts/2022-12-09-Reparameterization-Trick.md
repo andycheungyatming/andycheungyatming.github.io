@@ -75,6 +75,7 @@ We want to minimize the loss by computing:
 $$
 \nabla_\theta\mathbb{E}_{x\sim p_\theta (x)}[f(x)]
 $$
+
 Sometime the function above is not differentiable. We introduce a new variable & map through a determinstic function by substitution:
 
 $$
