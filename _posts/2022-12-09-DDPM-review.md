@@ -25,17 +25,21 @@ $$ \{\beta_t \in (0, 1)\}_{t=1}^T $$
 With steps **T**, we can produce a sequence of noisy samples 
 $$ x_1, x_2, ..., x_T $$
 
-However, it is difficult to rebuild the image from \(x_t\) to \(x_0\) directly, we need the model to learn the rebuilt process piece by piece. 
+However, it is difficult to rebuild the image from $$x_t$$ to $$x_0$$ directly, we need the model to learn the rebuilt process piece by piece. 
 
 ## Destruction (Forward process)
 I'd like to use destruction instead of forward process. Basically we want to make a image (with pattern) to a pure gaussian noise by putting more gaussian noise recursively (with a fixed number of steps). 
 
 Therefore, we can let a image smaple(from real data distribution)
 $$ \mathbf{x}_0 \sim q(\mathbf{x}) $$
-usually we will also define steps **T**
-The step size is controlled by 
+
+Usually we will also define steps
+$$T$$, where step size is controlled by 
 $$ \{\beta_t \in (0, 1)\}_{t=1}^T $$
-With steps **T**, we can produce a sequence of noisy samples 
+
+With steps 
+$$T$$
+, we can produce a sequence of noisy samples 
 $$ x_1, x_2, ..., x_T $$
 
 
