@@ -138,6 +138,7 @@ $$
 \boldsymbol{\mu}(\boldsymbol{x}_t) &= \frac{1}{\sqrt{\alpha_t}}\left(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)\right)
 \end{aligned}
 $$
+
 where 
 $$ \theta $$
 is trainable parameter
