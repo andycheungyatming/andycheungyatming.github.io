@@ -39,9 +39,20 @@ $$ x_T \rarr x_{T-1} = u(x_T) \rarr x_{T-2} = u(x_{T-1}) \rarr ... \rarr x_1 = u
 ## Destruction (Forward Process)
 I'd like to use destruction instead of forward process. Basically we want to make a image (with pattern) to a pure gaussian noise by putting more gaussian noise recursively (with a fixed number of steps). 
 
-Each step can be defined as following formulas 
+### Merging of Gaussian Noise
+Two Gaussian ,e.g. 
+$$ \boldsymbol{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \boldsymbol{N}(0,\sigma^2_2 \boldsymbol{I})$$
+with different variance can be merged to 
+$$ \boldsymbol{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I}) $$
+Each step can be defined as following formulas.
+
+### Details on destruction process
+we define each step of 
+$$ \boldsymbol{x}_t $$
+as
+
 $$
-x_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \text{where } \epsilon\sim \boldsymbol{N}(0, \boldsymbol{I}) 
+\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \text{where } \epsilon\sim \boldsymbol{N}(0, \boldsymbol{I}) 
 $$
 
 where
@@ -54,8 +65,11 @@ $$
 \begin{aligned}
 \mathbf{x}_t 
 &= \sqrt{\alpha_t}\mathbf{x}_{t-1} + \sqrt{1 - \alpha_t}\boldsymbol{\epsilon}_{t-1} & \text{ ;where } \boldsymbol{\epsilon}_{t-1}, \boldsymbol{\epsilon}_{t-2}, \dots \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
-&= \sqrt{\alpha_t}()
-&= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2} & \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).} \\
+&= \sqrt{\alpha_t}(\sqrt{\alpha_{t-1}}\mathbf{x_{t-2}} + \sqrt{1-\alpha_{t-1}}\boldsymbol{\epsilon}_{t-2}) + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
+&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}} + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
+&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{(\sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}})^2 + (\sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}})^2}\\
+&=\sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\cancel{\alpha_t} - \alpha_t\alpha_{t-1}+1 - \cancel{\alpha_t} }\bar{\boldsymbol{\epsilon}}_{t-2} & \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).}\\
+&= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2}  \\
 &= \dots \\
 &= \sqrt{(a_t\dots a_1)} \mathbf{x}_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\epsilon}\\
 &= \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\epsilon} \\
@@ -68,7 +82,11 @@ $$ \boldsymbol{\epsilon} $$
 is a sum of i.i.d gaussian noise
 
 Therefore, we can observe by more steps iterated, the more image will be converted to pure noise. 
-
+### Merging of Gaussian Noise
+Two Gaussian ,e.g. 
+$$ \boldsymbol{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \boldsymbol{N}(0,\sigma^2_2 \boldsymbol{I})$$
+with different variance can be merged to 
+$$ \boldsymbol{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I}) $$
 ### Schedule
 
 The formula 
@@ -94,9 +112,33 @@ Later cosine schedule is proponsed. It replace the linear schedule as:
 
 Cosine schedule can solve the problem mentioned above.
 
-### Merging of Gaussian Noise
-Two Gaussian ,e.g. 
-$$ \boldsymbol{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \boldsymbol{N}(0,\sigma^2_2 \boldsymbol{I})$$
-with different variance can be merged to 
-$$ \boldsymbol{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I}) $$
+### Connection with frequency and destruction
+![Illustration of forward process](https://i.imgur.com/OdL8Agc.png)
+- At small t, most of the low frequency contents are not perturbed by the noise, but high frequency content are being perturbed.
+- At bigger t, low frequency contents are also perturbed.
+- At the end of forward process, we get rid of the both low and high frequency contents of image.
+![Freqency connection](https://i.imgur.com/l3f0Wo3.png)  
+
+## Building (Reverse Process)
+![圖 3](https://s2.loli.net/2022/12/12/ZQoaAqjb2f64erd.png)  
+
+We know how to process the forward process. However we have no idea to recover an image from noise as we dont know the formula, or equation for it. Luckily we can use deep neural network from it due to [Universal Approximation Theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem).
+
+However, it is mentioned that it is difficult to recover/ generate directly from 
+$$x_t \rarr x_0$$
+. Therefore, the intuitive idea is to find 
+$$ q(x_{t-1}|x_t)$$
+repeatedly and remove the noise (denoise) the image piece by piece.
+
+Remember [Reparameterization Trick]() map 
+$$\boldsymbol{N}(\mu, \sigma^2) \rarr \boldsymbol{N}(0,\boldsymbol{I})$$
+via change of variable.
+
+
+
+
+
+
+
+
 
