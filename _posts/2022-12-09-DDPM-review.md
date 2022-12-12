@@ -23,31 +23,11 @@ Denoising Diffusion Probabilistic Models (DDPM) is introduced in [(Ho et al., 20
 
 we can let a image smaple(from real data distribution) $\mathbf{x}_0 \sim q(\mathbf{x})$
 
-Usually we will also define steps $T$
+Usually we will also define steps $T$, where step size is controlled by $\{\beta_t \in (0, 1)\}_{t=1}^T$
 
-, where step size is controlled by
+With steps $T$, we can produce a sequence of noisy samples $x_1, x_2, ..., x_T = z$
 
-$$
-\{\beta_t \in (0, 1)\}_{t=1}^T
-$$
-
-With steps
-
-$$
-T
-$$
-
-, we can produce a sequence of noisy samples
-
-$$
-x_1, x_2, ..., x_T = z
-$$
-
-However, it is difficult to rebuild the image from
-
-$$
-x_t
-$$
+However, it is difficult to rebuild the image from $x_t$
 
  to
 

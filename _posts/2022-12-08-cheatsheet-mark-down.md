@@ -183,6 +183,12 @@ $$\tiny Hello!$$
 
 # Latex
 
+## Inline equation
+
+$$
+z = x\times y
+$$
+
 ## Display equation
 
 $$
