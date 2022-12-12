@@ -33,7 +33,7 @@ However, it is difficult to rebuild the image from $x_t$ to $x_0$
 i.e.
 
 $$
-x_T \rArr x_{T-1} = u(x_T) \rArr x_{T-2} = u(x_{T-1}) \rArr ... \rArr x_1 = u(x_2) \rArr x_0 = u(x_1)
+x_T \rightarrow x_{T-1} = u(x_T) \rightarrow x_{T-2} = u(x_{T-1}) \rightarrow ... \rightarrow x_1 = u(x_2) \rightarrow x_0 = u(x_1)
 $$
 
 ## Destruction (Forward Process)
@@ -149,7 +149,7 @@ Cosine schedule can solve the problem mentioned above.
 
 We know how to process the forward process. However we have no idea to recover an image from noise as we dont know the formula, or equation for it. Luckily we can use deep neural network to approximate one due to [Universal Approximation Theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem).
 
-However, it is mentioned that it is difficult to recover/ generate directly from $x_t \rArr x_0$. Therefore, the intuitive idea is to find $q(x_{t-1}|x_t)$
+However, it is mentioned that it is difficult to recover/ generate directly from $x_t \rightarrow x_0$. Therefore, the intuitive idea is to find $q(x_{t-1}|x_t)$
 
 repeatedly and remove the noise (denoise) the image piece by piece. i.e.
 
