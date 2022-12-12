@@ -36,7 +36,7 @@ i.e.
 
 $$ x_T \rarr x_{T-1} = u(x_T) \rarr x_{T-2} = u(x_{T-1}) \rarr ... \rarr x_1 = u(x_2) \rarr x_0 = u(x_1) $$
 
-## Destruction (Forward process)
+## Destruction (Forward Process)
 I'd like to use destruction instead of forward process. Basically we want to make a image (with pattern) to a pure gaussian noise by putting more gaussian noise recursively (with a fixed number of steps). 
 
 Each step can be defined as following formulas 
@@ -54,6 +54,7 @@ $$
 \begin{aligned}
 \mathbf{x}_t 
 &= \sqrt{\alpha_t}\mathbf{x}_{t-1} + \sqrt{1 - \alpha_t}\boldsymbol{\epsilon}_{t-1} & \text{ ;where } \boldsymbol{\epsilon}_{t-1}, \boldsymbol{\epsilon}_{t-2}, \dots \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
+&= \sqrt{\alpha_t}()
 &= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2} & \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).} \\
 &= \dots \\
 &= \sqrt{(a_t\dots a_1)} \mathbf{x}_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\epsilon}\\
@@ -67,4 +68,35 @@ $$ \boldsymbol{\epsilon} $$
 is a sum of i.i.d gaussian noise
 
 Therefore, we can observe by more steps iterated, the more image will be converted to pure noise. 
+
+### Schedule
+
+The formula 
+$$ \bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
+is following a schedule. The schedle is responsilbe to how the way is to destruct an image to pure noise. 
+
+#### Linear Schedule
+The DDPM adopt linear schedule as follows:
+```python
+def linear_beta_schedule(timesteps):
+    beta_start = 0.0001
+    beta_end = 0.02
+    return torch.linspace(beta_start, beta_end, timesteps)
+```
+![linear schedule](https://i.imgur.com/Y5HARtf.png)
+
+#### Cosine Schedule
+![cosine schedule](https://i.imgur.com/dj9bcqr.png)
+Later cosine schedule is proponsed. It replace the linear schedule as:
+- In linear schedule, the last couple of timesteps already seems like complete noise 
+- and might be redundent. 
+- Therefore, Information is destroyed too fast.
+
+Cosine schedule can solve the problem mentioned above.
+
+### Merging of Gaussian Noise
+Two Gaussian ,e.g. 
+$$ \boldsymbol{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \boldsymbol{N}(0,\sigma^2_2 \boldsymbol{I})$$
+with different variance can be merged to 
+$$ \boldsymbol{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I}) $$
 
