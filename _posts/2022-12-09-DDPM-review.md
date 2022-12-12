@@ -50,13 +50,13 @@ $$
 x_1, x_2, ..., x_T = z
 $$
 
-However, it is difficult to rebuild the image from 
+However, it is difficult to rebuild the image from
 
 $$
 x_t
 $$
 
- to 
+ to
 
 $$
 x_0
@@ -144,7 +144,7 @@ is a sum of i.i.d gaussian noise
 
 Therefore, we can observe by more steps iterated, the more image will be converted to pure noise.
 
-### Merging of two Gaussian 
+### Merging of two Gaussian
 
 Two Gaussian ,e.g.
 
@@ -158,35 +158,51 @@ $$
 \mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})
 $$
 
-#### Proof 
-Recall the theorem of variance. 
-$$ \mathbb{V}(X+Y) = \mathbb{V}(X) + \mathbb{V}(Y) + 2\mathbb{Cov}(XY)$$
+#### Proof
 
-More generally, for random variables 
-$$ X_1, X_2, \dots, X_N$$
-we have 
+Recall the theorem of variance.
+
+$$
+\mathbb{V}(X+Y) = \mathbb{V}(X) + \mathbb{V}(Y) + 2\mathbb{Cov}(XY)
+$$
+
+More generally, for random variables
+
+$$
+X_1, X_2, \dots, X_N
+$$
+
+we have
 
 $$
 \mathbb{V}\left(\sum_{i=1}^N a_i X_i\right)=\sum_{i=1}^N a_i^2 \mathbb{V}\left(X_i\right)+2 \sum_{i=1}^{N-1} \sum_{j=i+1}^N a_i a_j \operatorname{Cov}\left(X_i, X_j\right)
 $$
 
-As 
-$$X_i \sim \mathbb{N}(\mu_i, \Sigma_i), i=1 \cdots N,$$
+As
+
+$$
+X_i \sim \mathbb{N}(\mu_i, \Sigma_i), i=1 \cdots N,
+$$
+
 , we have claim they are i.i.d. Hence the covariances are zero. i.e.
-$$ \textbf{Cov}(X_i,X_j)=0$$
+
+$$
+\textbf{Cov}(X_i,X_j)=0
+$$
 
 A newly aggregated these Gaussian distributions is defined as a weighted sum:
 
 $$
 X=\sum_{i=1}^{N} a_i X_i=\sum_{i=1}^{N} \frac{n_i}{\sum_{l=1}^{N}n_l} X_i, \\ 
-\text{where} \sum_{i=1}^N a_i = 1 
+\text{where} \sum_{i=1}^N a_i = 1
 $$
 
 Therefore, we can find the merged variance as:
 
 $$
 \begin{aligned}
-\text{Consider } \mathbb{X}_i &\sim \mathbb{N}(\mu_i, \Sigma_i), \text{ where } \mu = \sum_{i=1}^{N} a_i \mu_i \\ 
+\text{Consider } \mathbb{X}_i &\sim \mathbb{N}(\mu_i, \Sigma_i) \\
+\mu &= \sum_{i=1}^{N} a_i \mu_i \\ 
 \Sigma &=\mathbb{V}(X)= \mathbb{V}(\sum_{i=1}^{N} a_i X_i)\\
 &=\sum_{i=1}^{N}a_i^2\mathbb{V}(X_i) + 2 \sum_{i=1}^{N-1}\sum_{j=i+1}^{N} a_i a_j \textbf{Cov}(X_i,X_j) \\
 & = \sum_{i=1}^{N}a_i^2 \Sigma_i + 0 \\
@@ -318,7 +334,150 @@ $$
 via
 
 $$
-\boldsymbol{\mu}(\boldsymbol{x}_t) = x_{t-1} = \frac{1}{\sqrt{\alpha_t}}(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)
+\boldsymbol{\mu}(\boldsymbol{x}_t) = x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\big(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)\big)
 $$
 
+which is simply an expression of
+
+$$
+x_{t-1} \approx x_t - noise, \text{where } noise \sim \boldsymbol{N}(0,I)
+$$
+
+in each step.
+
 # DDPM Explanation by Bayes' Perspective
+
+### ~~Product of Gaussian~~
+
+Let
+
+$$
+f(x) \text{ and } g(x)
+$$
+
+be Gaussian PDFs, where
+
+$$
+f(x)=\frac{1}{\sqrt{2 \pi} \sigma_f} e^{-\frac{\left(x-\mu_f\right)^2}{2 \sigma_f^2}} \text { and } g(x)=\frac{1}{\sqrt{2 \pi} \sigma_g} e^{-\frac{\left(x-\mu_g\right)^2}{2 \sigma_g^2}}
+$$
+
+### Completing the Square
+
+We have a quadratic form as follows:
+![圖 4](https://s2.loli.net/2022/12/12/hD3uCm7ZF9QqxXA.png)
+
+$$
+\begin{aligned}
+    ax^2 + bx + c &= 0 \\
+    a(x+d)^2 +e &= 0 \\
+    \therefore d &= \frac{b}{2a} \\
+    \text{And  } e &= c - \frac{b^2}{4a} = c - d^2
+\end{aligned}
+$$
+
+## Recall of Bayes' Theorem
+
+[Bayes&#39; theorem](https://en.wikipedia.org/wiki/Bayes%27_theorem) is defined as follows:
+
+$$
+\begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}\end{equation}
+$$
+
+However, we do not know the expression formulas of
+
+$$
+p(\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_t)
+$$
+
+. However, we can add one more condition
+
+$$
+\boldsymbol{x}_0
+$$
+
+s.t.
+
+$$
+\begin{equation}
+p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_0)}{p(\boldsymbol{x}_t|\boldsymbol{x}_0)}
+\end{equation}
+$$
+
+where
+
+$$
+p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_0),p(\boldsymbol{x}_t|\boldsymbol{x}_0)
+$$
+
+is well known.
+
+Therefore, we can get the following expression:
+
+$$
+\begin{aligned}
+    p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1}) &= \boldsymbol{N}(\boldsymbol{x}_t; \sqrt{\alpha_t}\boldsymbol{x}_{t-1};\beta_t\boldsymbol{I}) \\
+    p(\boldsymbol{x}_{t-1} \vert \boldsymbol{x}_0) &= \boldsymbol{N}(\boldsymbol{x}_{t-1}; \sqrt{\bar{\alpha}_{t-1}} 
+    \boldsymbol{x}_0, \bar{\beta}_{t-1}\boldsymbol{I}) \\
+    p(\boldsymbol{x}_t \vert \boldsymbol{x}_0) &= \boldsymbol{N}(\boldsymbol{x}_t; \sqrt{\bar{\alpha}_t} 
+    \boldsymbol{x}_0, \bar{\beta}_t\boldsymbol{I})
+
+\end{aligned}
+$$
+
+We put all expression above to compute:
+
+$$
+\begin{aligned}
+p(\mathbf{x}_{t-1} \vert \mathbf{x}_t, \mathbf{x}_0) 
+&= p(\mathbf{x}_t \vert \mathbf{x}_{t-1}, \mathbf{x}_0) \frac{ p(\mathbf{x}_{t-1} \vert \mathbf{x}_0) }{ p(\mathbf{x}_t \vert \mathbf{x}_0) } \\
+&\propto \exp \Big(-\frac{1}{2} \big(\frac{(\mathbf{x}_t - \sqrt{\alpha_t} \mathbf{x}_{t-1})^2}{\beta_t} + \frac{(\mathbf{x}_{t-1} - \sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_0)^2}{1-\bar{\alpha}_{t-1}} - \frac{(\mathbf{x}_t - \sqrt{\bar{\alpha}_t} \mathbf{x}_0)^2}{1-\bar{\alpha}_t} \big) \Big) \\
+&= \exp \Big(-\frac{1}{2} \big(\frac{\mathbf{x}_t^2 - 2\sqrt{\alpha_t} \mathbf{x}_t \color{blue}{\mathbf{x}_{t-1}} \color{yellow}{+ \alpha_t} \color{red}{\mathbf{x}_{t-1}^2} }{\beta_t} + \frac{ \color{red}{\mathbf{x}_{t-1}^2} \color{yellow}{- 2 \sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_0} \color{blue}{\mathbf{x}_{t-1}} \color{yellow}{+ \bar{\alpha}_{t-1} \mathbf{x}_0^2}  }{1-\bar{\alpha}_{t-1}} - \frac{(\mathbf{x}_t - \sqrt{\bar{\alpha}_t} \mathbf{x}_0)^2}{1-\bar{\alpha}_t} \big) \Big) \\
+&= \exp\Big( -\frac{1}{2} \big( \color{red}{(\frac{\alpha_t}{\beta_t} + \frac{1}{1 - \bar{\alpha}_{t-1}})} \mathbf{x}_{t-1}^2 - \color{blue}{(\frac{2\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{2\sqrt{\bar{\alpha}_{t-1}}}{1 - \bar{\alpha}_{t-1}} \mathbf{x}_0)} \mathbf{x}_{t-1} \color{yellow}{ + C(\mathbf{x}_t, \mathbf{x}_0) \big) \Big)} \\
+&= \exp\Big( -\frac{1}{2} \big( \color{red}{(\frac{\alpha_t}{\beta_t} + \frac{1}{1 - \bar{\alpha}_{t-1}})} \mathbf{x}_{t-1}^2 - \color{blue}{(\frac{2\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{2\sqrt{\bar{\alpha}_{t-1}}}{1 - \bar{\alpha}_{t-1}} \mathbf{x}_0)} \mathbf{x}_{t-1} \color{yellow}{ + C(\mathbf{x}_t, \mathbf{x}_0) \big) \Big)} \\
+&= \exp\Big( -\frac{1}{2} \big( \color{red}{(\frac{\alpha_t}{\beta_t} + \frac{1}{\bar{\beta}_{t-1}})} \mathbf{x}_{t-1}^2 - \color{blue}{(\frac{2\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{2\sqrt{\bar{\alpha}_{t-1}}}{\bar{\beta}_{t-1}} \mathbf{x}_0)} \mathbf{x}_{t-1} \color{yellow}{ + C(\mathbf{x}_t, \mathbf{x}_0) \big) \Big)} \\
+&= exp\Big(-\frac{1}{2}\big(\color{red}{a}\color{black}{(x+}\color{blue}{d})^2 \color{yellow}{+ e} \big)\Big) \\
+&= \boldsymbol{N}( d , \frac{1}{a}\boldsymbol{I}) 
+\end{aligned}
+$$
+
+Recall that
+
+$$
+f(x)=\frac{1}{\sqrt{2 \pi} \sigma_f} exp\Big({-\frac{1}{2}\frac{\left(x-\color{yellow}{\mu_f}\right)^2}{\color{yellow}{\sigma_f^2}}}\Big) = \boldsymbol{N}(\mu_f, \sigma^2_f)
+$$
+
+We can focus on getting the coefficient of
+
+$$
+\boldsymbol{x}_{t-1}^2
+$$
+
+as this term is quadratic, this implies the final format also follow gaussian distribution. We get the quadratic form by [completing the square](https://www.mathsisfun.com/algebra/completing-square.html):
+
+$$
+\begin{aligned}
+a = \frac{\alpha_t}{\beta_t} + \frac{1}{\bar{\beta}_{t-1}} = \frac{\alpha_t\bar{\beta}_{t-1} + \beta_t}{\bar{\beta}_{t-1} \beta_t} &= \frac{\alpha_t(1-\bar{\alpha}_{t-1}) + \beta_t}{\bar{\beta}_{t-1} \beta_t} = \frac{1-\bar{\alpha}_t}{\bar{\beta}_{t-1} \beta_t} = \frac{\bar{\beta}_t}{\bar{\beta}_{t-1} \beta_t} \\
+\therefore p(\mathbf{x}_{t-1} \vert \mathbf{x}_t, \mathbf{x}_0) &= \boldsymbol{N}( d , \frac{\bar{\beta}_{t-1} \beta_t}{\bar{\beta}_t}\boldsymbol{I}
+)
+
+\end{aligned}
+$$
+
+Therefore, 
+
+$$
+\begin{aligned}
+d = \frac{b}{2a}
+&= (\frac{\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1} }}{1 - \bar{\alpha}_{t-1}} \mathbf{x}_0)/(\frac{\alpha_t}{\beta_t} + \frac{1}{1 - \bar{\alpha}_{t-1}}) \\
+&= (\frac{\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1} }}{1 - \bar{\alpha}_{t-1}} \mathbf{x}_0) \color{green}{\frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_t} \cdot \beta_t} \\
+&= \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t} \mathbf{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1 - \bar{\alpha}_t} \mathbf{x}_0\\
+&= \frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t}\boldsymbol{x}_0
+\end{aligned}
+$$
+
+$$
+\begin{equation}
+\therefore p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t}\boldsymbol{x}_0,\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)
+\end{equation}
+$$
+
