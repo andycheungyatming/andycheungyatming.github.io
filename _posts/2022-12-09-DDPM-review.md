@@ -41,11 +41,11 @@ I'd like to use destruction instead of forward process. Basically we want to mak
 
 Each step can be defined as following formulas 
 $$
-x_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \text{where } \epsilon\sim \boldsymbol{N}(0, \boldsymbol{I})
+x_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \text{where } \epsilon\sim \boldsymbol{N}(0, \boldsymbol{I}) 
 $$
 
 where
-$$ \alpha_t + \beta_t = 1 $$
+$$ \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0$$
 and let 
 $$ \bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
 , we have 
@@ -56,9 +56,15 @@ $$
 &= \sqrt{\alpha_t}\mathbf{x}_{t-1} + \sqrt{1 - \alpha_t}\boldsymbol{\epsilon}_{t-1} & \text{ ;where } \boldsymbol{\epsilon}_{t-1}, \boldsymbol{\epsilon}_{t-2}, \dots \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
 &= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2} & \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).} \\
 &= \dots \\
+&= \sqrt{(a_t\dots a_1)} x_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\epsilon}\\
 &= \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\epsilon} \\
 q(\mathbf{x}_t \vert \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I})
 \end{aligned}
 $$
 
-Here, [Reparameterization Trick]() is applied. For more detail, please refer to the link captioned.
+where 
+$$ \boldsymbol{\epsilon} $$
+is a sum of i.i.d gaussian noise
+
+Therefore, we can observe by more steps iterated, the more image will be converted to pure noise. 
+
