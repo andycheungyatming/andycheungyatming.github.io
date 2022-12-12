@@ -13,7 +13,7 @@ tags:
 # What are Diffusion Models?
 Denoising Diffusion Probabilistic Models (DDPM) is introduced in [(Ho et al., 2020)](https://arxiv.org/abs/2006.11239). The maths background is discussed [(Sohl-Dickstein et al., 2015)](https://arxiv.org/abs/1503.03585). The essential idea is to systematically and slowly destroy structure in a data distribution through an iterative forward diffusion process which is fixed.
 
-# Some maths on DDPM
+# DDPM General Explanation
 ![figure1](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/DDPM.png)
 >The Markov chain of forward (reverse) diffusion process of generating a sample by slowly adding (removing) noise.
 
@@ -160,7 +160,11 @@ $$
 Therefore, we can finalize the loss function as 
 $$ \boldsymbol{L} = \frac{\beta_t}{\alpha_t}\left\Vert \boldsymbol{\varepsilon}_t - \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{\bar{\beta}}\boldsymbol{\bar{\epsilon}}, t)\right\Vert^2$$
 
-which is exact the same of loss function in DDPM [(Ho et al., 2020)](https://arxiv.org/abs/2006.11239)
+which is similar to loss function in DDPM [(Ho et al., 2020)](https://arxiv.org/abs/2006.11239)
+
+$$
+\mathbb{E}_{\mathbf{x}_0, \boldsymbol{\epsilon}}\left[\frac{\beta_t^2}{2 \sigma_t^2 \alpha_t\left(1-\bar{\alpha}_t\right)}\left\|\boldsymbol{\epsilon}-\boldsymbol{\epsilon}_\theta\left(\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}, t\right)\right\|^2\right]
+$$
 
 Therefore, we can train an network by minisming the captioned loss function, and generate a random image starting by 
 $$ x_T \sim \boldsymbol{N}(0, \boldsymbol{I}) $$
@@ -169,3 +173,4 @@ $$ x_0 $$
 via
 $$ \boldsymbol{\mu}(\boldsymbol{x}_t) = x_{t-1} = \frac{1}{\sqrt{\alpha_t}}(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)$$
 
+# DDPM Explanation by Bayes' Perspective
