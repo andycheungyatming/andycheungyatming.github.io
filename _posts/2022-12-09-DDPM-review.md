@@ -143,7 +143,7 @@ $$ \theta $$
 is trainable parameter
 
 
-Therefore, we can formulate a loss function by minimising predicted output
+Therefore, we can focus on and formulate a loss function by minimising predicted output
 $$u(x_t)$$
  and groundtruth
 $$x_{t-1}$$
@@ -162,27 +162,10 @@ $$ \boldsymbol{L} = \frac{\beta_t}{\alpha_t}\left\Vert \boldsymbol{\varepsilon}_
 
 which is exact the same of loss function in DDPM [(Ho et al., 2020)](https://arxiv.org/abs/2006.11239)
 
-##### Remark
-Remember normal distribution equation: 
-
-$$
-\begin{aligned}
-    f(x)&=\frac{1}{\sigma \sqrt{2 \pi}} exp\Big({-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}\Big) \\
-    &=N(\mu,\sigma^2)
-
-\end{aligned}
-$$
-
-and  [Reparameterization Trick]() map 
-$$\boldsymbol{N}(\mu, \sigma^2) \rarr \boldsymbol{N}(0,\boldsymbol{I})$$
-via change of variable.
-
-
-
-
-
-
-
-
-
+Therefore, we can train an network by minisming the captioned loss function, and generate a random image starting by 
+$$ x_T \sim \boldsymbol{N}(0, \boldsymbol{I}) $$
+to
+$$ x_0 $$
+via
+$$ \boldsymbol{\mu}(\boldsymbol{x}_t) = x_{t-1} = \frac{1}{\sqrt{\alpha_t}}(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)$$
 
