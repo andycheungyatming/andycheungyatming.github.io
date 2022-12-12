@@ -71,14 +71,15 @@ $$
 &=\sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\cancel{\alpha_t} - \alpha_t\alpha_{t-1}+1 - \cancel{\alpha_t} }\bar{\boldsymbol{\epsilon}}_{t-2} & \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).}\\
 &= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2}  \\
 &= \dots \\
-&= \sqrt{(a_t\dots a_1)} \mathbf{x}_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\epsilon}\\
-&= \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\epsilon} \\
-q(\mathbf{x}_t \vert \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I})
+&= \sqrt{(a_t\dots a_1)} \mathbf{x}_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\bar{\epsilon}}\\
+&= \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\bar{\epsilon}} \\
+q(\mathbf{x}_t \vert \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I}) \\
+\text{and }q(\mathbf{x}_{t-1} \vert \mathbf{x}_t, \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_{t-1}; \color{blue}{\tilde{\boldsymbol{\mu}}}(\mathbf{x}_t, \mathbf{x}_0), \color{red}{\tilde{\beta}_t} \mathbf{I})
 \end{aligned}
 $$
 
 where 
-$$ \boldsymbol{\epsilon} $$
+$$ \boldsymbol{\bar{\epsilon}} $$
 is a sum of i.i.d gaussian noise
 
 Therefore, we can observe by more steps iterated, the more image will be converted to pure noise. 
@@ -128,11 +129,54 @@ However, it is mentioned that it is difficult to recover/ generate directly from
 $$x_t \rarr x_0$$
 . Therefore, the intuitive idea is to find 
 $$ q(x_{t-1}|x_t)$$
-repeatedly and remove the noise (denoise) the image piece by piece.
+repeatedly and remove the noise (denoise) the image piece by piece. i.e.
 
-Remember [Reparameterization Trick]() map 
+$$ 
+\begin{aligned}
+\boldsymbol{x}_{t-1} &= \frac{1}{\sqrt{\alpha_t}}(\boldsymbol{x}_t - \sqrt{\beta_t}\epsilon_t) \\
+\therefore 
+\boldsymbol{\mu}(\boldsymbol{x}_t) &= \frac{1}{\sqrt{\alpha_t}}\left(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)\right)
+\end{aligned}
+$$
+where 
+$$ \theta $$
+is trainable parameter
+
+
+Therefore, we can formulate a loss function by minimising predicted output
+$$u(x_t)$$
+ and groundtruth
+$$x_{t-1}$$
+as 
+
+$$ 
+\begin{aligned}
+\mathbb{L} &= \left\Vert\boldsymbol{x}_{t-1} - \boldsymbol{\mu}(\boldsymbol{x}_t)\right\Vert^2 \\
+&= \left\Vert\frac{1}{\sqrt{\alpha_t}}(\boldsymbol{x}_t - \sqrt{\beta_t}\epsilon_t) - \boldsymbol{\mu}(\boldsymbol{x}_t)\right\Vert^2 \\
+&= \frac{\beta_t}{\alpha_t}\left\Vert \boldsymbol{\varepsilon}_t - \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)\right\Vert^2
+\end{aligned}
+$$
+
+Therefore, we can finalize the loss function as 
+$$ \boldsymbol{L} = \frac{\beta_t}{\alpha_t}\left\Vert \boldsymbol{\varepsilon}_t - \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{\bar{\beta}}\boldsymbol{\bar{\epsilon}}, t)\right\Vert^2$$
+
+which is exact the same of loss function in DDPM [(Ho et al., 2020)](https://arxiv.org/abs/2006.11239)
+
+##### Remark
+Remember normal distribution equation: 
+
+$$
+\begin{aligned}
+    f(x)&=\frac{1}{\sigma \sqrt{2 \pi}} exp\Big({-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}\Big) \\
+    &=N(\mu,\sigma^2)
+
+\end{aligned}
+$$
+
+and  [Reparameterization Trick]() map 
 $$\boldsymbol{N}(\mu, \sigma^2) \rarr \boldsymbol{N}(0,\boldsymbol{I})$$
 via change of variable.
+
 
 
 
