@@ -27,109 +27,22 @@ Usually we will also define steps $T$, where step size is controlled by $\{\beta
 
 With steps $T$, we can produce a sequence of noisy samples $x_1, x_2, ..., x_T = z$
 
-However, it is difficult to rebuild the image from $x_t$
-
- to
-
-$$
-x_0
-$$
+However, it is difficult to rebuild the image from $x_t$ to $x_0$
 
  directly, we need the model to learn the rebuilt process piece by piece.
 i.e.
 
 $$
-x_T \rarr x_{T-1} = u(x_T) \rarr x_{T-2} = u(x_{T-1}) \rarr ... \rarr x_1 = u(x_2) \rarr x_0 = u(x_1)
+x_T \rArr x_{T-1} = u(x_T) \rArr x_{T-2} = u(x_{T-1}) \rArr ... \rArr x_1 = u(x_2) \rArr x_0 = u(x_1)
 $$
 
 ## Destruction (Forward Process)
 
 I'd like to use destruction instead of forward process. Basically we want to make a image (with pattern) to a pure gaussian noise by putting more gaussian noise recursively (with a fixed number of steps).
 
-### Merging of Gaussian Noise
-
-Two Gaussian ,e.g.
-
-$$
-\boldsymbol{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \boldsymbol{N}(0,\sigma^2_2 \boldsymbol{I})
-$$
-
-with different variance can be merged to
-
-$$
-\boldsymbol{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})
-$$
-
-Each step can be defined as following formulas.
-
-### Details on destruction process
-
-we define each step of
-
-$$
-\boldsymbol{x}_t
-$$
-
-as
-
-$$
-\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \text{where } \epsilon\sim \boldsymbol{N}(0, \boldsymbol{I})
-$$
-
-where
-
-$$
-\alpha_t + \beta_t = 1 \text{ and } \beta \approx 0
-$$
-
-and let
-
-$$
-\bar{\alpha}_t = \prod^t_{i=1}\alpha_i
-$$
-
-, we have
-
-$$
-\begin{aligned}
-\mathbf{x}_t 
-&= \sqrt{\alpha_t}\mathbf{x}_{t-1} + \sqrt{1 - \alpha_t}\boldsymbol{\epsilon}_{t-1} & \text{ ;where } \boldsymbol{\epsilon}_{t-1}, \boldsymbol{\epsilon}_{t-2}, \dots \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
-&= \sqrt{\alpha_t}(\sqrt{\alpha_{t-1}}\mathbf{x_{t-2}} + \sqrt{1-\alpha_{t-1}}\boldsymbol{\epsilon}_{t-2}) + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
-&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}} + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
-&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{(\sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}})^2 + (\sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}})^2}\\
-&=\sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\cancel{\alpha_t} - \alpha_t\alpha_{t-1}+1 - \cancel{\alpha_t} }\bar{\boldsymbol{\epsilon}}_{t-2} & \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).}\\
-&= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2}  \\
-&= \dots \\
-&= \sqrt{(a_t\dots a_1)} \mathbf{x}_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\bar{\epsilon}}\\
-&= \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\bar{\epsilon}} \\
-q(\mathbf{x}_t \vert \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I}) \\
-\text{and }q(\mathbf{x}_{t-1} \vert \mathbf{x}_t, \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_{t-1}; \color{blue}{\tilde{\boldsymbol{\mu}}}(\mathbf{x}_t, \mathbf{x}_0), \color{red}{\tilde{\beta}_t} \mathbf{I})
-\end{aligned}
-$$
-
-where
-
-$$
-\boldsymbol{\bar{\epsilon}}
-$$
-
-is a sum of i.i.d gaussian noise
-
-Therefore, we can observe by more steps iterated, the more image will be converted to pure noise.
-
 ### Merging of two Gaussian
 
-Two Gaussian ,e.g.
-
-$$
-\mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\sigma^2_2 \boldsymbol{I})
-$$
-
-with different variance can be merged to
-
-$$
-\mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})
-$$
+Two Gaussian ,e.g.$ \mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\sigma^2_2 \boldsymbol{I}) $ with different variance can be merged to $\mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})$
 
 #### Proof
 
@@ -139,32 +52,15 @@ $$
 \mathbb{V}(X+Y) = \mathbb{V}(X) + \mathbb{V}(Y) + 2\mathbb{Cov}(XY)
 $$
 
-More generally, for random variables
-
-$$
-X_1, X_2, \dots, X_N
-$$
-
-we have
+More generally, for random variables$X_1, X_2, \dots, X_N$, we have
 
 $$
 \mathbb{V}\left(\sum_{i=1}^N a_i X_i\right)=\sum_{i=1}^N a_i^2 \mathbb{V}\left(X_i\right)+2 \sum_{i=1}^{N-1} \sum_{j=i+1}^N a_i a_j \operatorname{Cov}\left(X_i, X_j\right)
 $$
 
-As
-
-$$
-X_i \sim \mathbb{N}(\mu_i, \Sigma_i), i=1 \cdots N,
-$$
-
-, we have claim they are i.i.d. Hence the covariances are zero. i.e.
-
-$$
-\textbf{Cov}(X_i,X_j)=0
-$$
+As $X_i \sim \mathbb{N}(\mu_i, \Sigma_i), i=1 \cdots N,$, we have claim they are i.i.d. Hence the covariances are zero. i.e. $\textbf{Cov}(X_i,X_j)=0$
 
 A newly aggregated these Gaussian distributions is defined as a weighted sum:
-
 $$
 X=\sum_{i=1}^{N} a_i X_i=\sum_{i=1}^{N} \frac{n_i}{\sum_{l=1}^{N}n_l} X_i, \\ 
 \text{where} \sum_{i=1}^N a_i = 1
@@ -179,20 +75,40 @@ $$
 \Sigma &=\mathbb{V}(X)= \mathbb{V}(\sum_{i=1}^{N} a_i X_i)\\
 &=\sum_{i=1}^{N}a_i^2\mathbb{V}(X_i) + 2 \sum_{i=1}^{N-1}\sum_{j=i+1}^{N} a_i a_j \textbf{Cov}(X_i,X_j) \\
 & = \sum_{i=1}^{N}a_i^2 \Sigma_i + 0 \\
-& = \sum_{i=1}^{N}a_i^2 \Sigma_i \\
-
+& = \sum_{i=1}^{N}a_i^2 \Sigma_i 
 \end{aligned}
 $$
 
+### Details on destruction process
+
+we define each step of $\boldsymbol{x}_t$ as $\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \text{where } \epsilon\sim \boldsymbol{N}(0, \boldsymbol{I})$,
+
+ where$\alpha_t + \beta_t = 1 \text{ and } \beta \approx 0$ and let $\bar{\alpha}_t = \prod^t_{i=1}\alpha_i $, we have
+
+$$
+\begin{aligned}
+\mathbf{x}_t 
+&= \sqrt{\alpha_t}\mathbf{x}_{t-1} + \sqrt{1 - \alpha_t}\boldsymbol{\epsilon}_{t-1} & \text{ ;where } \boldsymbol{\epsilon}_{t-1}, \boldsymbol{\epsilon}_{t-2}, \dots \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
+&= \sqrt{\alpha_t}(\sqrt{\alpha_{t-1}}\mathbf{x_{t-2}} + \sqrt{1-\alpha_{t-1}}\boldsymbol{\epsilon}_{t-2}) + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
+&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}} + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
+&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{(\sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}})^2 + (\sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}})^2}\\
+&=\sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\cancel{\alpha_t} - \alpha_t\alpha_{t-1}+1 - \cancel{\alpha_t} }\bar{\boldsymbol{\epsilon}}_{t-2} & \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).}\\
+&= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2}  \\
+&= \dots \\
+&= \sqrt{(a_t\dots a_1)} \mathbf{x}_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\bar{\epsilon}}\\
+&= \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\bar{\epsilon}} \\
+q(\mathbf{x}_t \vert \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I})
+\end{aligned}
+$$
+
+where $\boldsymbol{\bar{\epsilon}}$ is a sum of i.i.d gaussian noise
+
+Therefore, we can observe by more steps iterated, the more image will be converted to pure noise.
+
+
 ### Schedule
 
-The formula
-
-$$
-\bar{\alpha}_t = \prod^t_{i=1}\alpha_i
-$$
-
-is following a schedule. The schedle is responsilbe to how the way is to destruct an image to pure noise.
+The formula $\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$ is formed by a schedule. The schedle is responsilbe to how the way is to destruct an image to pure noise.
 
 #### Linear Schedule
 
@@ -233,17 +149,7 @@ Cosine schedule can solve the problem mentioned above.
 
 We know how to process the forward process. However we have no idea to recover an image from noise as we dont know the formula, or equation for it. Luckily we can use deep neural network to approximate one due to [Universal Approximation Theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem).
 
-However, it is mentioned that it is difficult to recover/ generate directly from
-
-$$
-x_t \rarr x_0
-$$
-
-. Therefore, the intuitive idea is to find
-
-$$
-q(x_{t-1}|x_t)
-$$
+However, it is mentioned that it is difficult to recover/ generate directly from $x_t \rArr x_0$. Therefore, the intuitive idea is to find $q(x_{t-1}|x_t)$
 
 repeatedly and remove the noise (denoise) the image piece by piece. i.e.
 
@@ -255,27 +161,9 @@ $$
 \end{aligned}
 $$
 
-where
+where $\theta$ is trainable parameters
 
-$$
-\theta
-$$
-
-is trainable parameter
-
-Therefore, we can focus on and formulate a loss function by minimising predicted output
-
-$$
-u(x_t)
-$$
-
- and groundtruth
-
-$$
-x_{t-1}
-$$
-
-as
+Therefore, we can focus on and formulate a loss function by minimising predicted output $u(x_t)$ and groundtruth $x_{t-1}$ as
 
 $$
 \begin{aligned}
@@ -292,19 +180,7 @@ $$
 \mathbb{E}_{\mathbf{x}_0, \boldsymbol{\epsilon}}\left[\frac{\beta_t^2}{2 \sigma_t^2 \alpha_t\left(1-\bar{\alpha}_t\right)}\left\|\boldsymbol{\epsilon}-\boldsymbol{\epsilon}_\theta\left(\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}, t\right)\right\|^2\right]
 $$
 
-Therefore, we can train an network by minisming the captioned loss function, and generate a random image starting by
-
-$$
-x_T \sim \boldsymbol{N}(0, \boldsymbol{I})
-$$
-
-to
-
-$$
-x_0
-$$
-
-via
+Therefore, we can train an network by minisming the captioned loss function, and generate a random image starting bym$x_T \sim \boldsymbol{N}(0, \boldsymbol{I})$ to $x_0$ via
 
 $$
 \boldsymbol{\mu}(\boldsymbol{x}_t) = x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\big(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)\big)
@@ -315,20 +191,13 @@ which is simply an expression of
 $$
 x_{t-1} \approx x_t - noise, \text{where } noise \sim \boldsymbol{N}(0,I)
 $$
-
 in each step.
 
 # DDPM Explanation by Bayes' Perspective
 
 ### ~~Product of Gaussian~~
 
-Let
-
-$$
-f(x) \text{ and } g(x)
-$$
-
-be Gaussian PDFs, where
+Let $f(x) \text{ and } g(x)$ be Gaussian PDFs, where
 
 $$
 f(x)=\frac{1}{\sqrt{2 \pi} \sigma_f} e^{-\frac{\left(x-\mu_f\right)^2}{2 \sigma_f^2}} \text { and } g(x)=\frac{1}{\sqrt{2 \pi} \sigma_g} e^{-\frac{\left(x-\mu_g\right)^2}{2 \sigma_g^2}}
@@ -343,9 +212,15 @@ $$
 \begin{aligned}
     ax^2 + bx + c &= 0 \\
     a(x+d)^2 +e &= 0 \\
-    \therefore d &= \frac{b}{2a} \\
-    \text{And  } e &= c - \frac{b^2}{4a} = c - d^2
 \end{aligned}
+$$
+
+By formulas, we have 
+$$
+\begin{gather}
+\therefore d = \frac{b}{2a} \\
+e = c - \frac{b^2}{4a} = c - d^2
+\end{gather}
 $$
 
 ## Recall of Bayes' Theorem
@@ -356,19 +231,7 @@ $$
 \begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}\end{equation}
 $$
 
-However, we do not know the expression formulas of
-
-$$
-p(\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_t)
-$$
-
-. However, we can add one more condition
-
-$$
-\boldsymbol{x}_0
-$$
-
-s.t.
+However, we do not know the expression formulas of $p(\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_t)$. Luckily, we can add one more condition$\boldsymbol{x}_0$ s.t.
 
 $$
 \begin{equation}
@@ -376,13 +239,7 @@ p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol
 \end{equation}
 $$
 
-where
-
-$$
-p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_0),p(\boldsymbol{x}_t|\boldsymbol{x}_0)
-$$
-
-is well known.
+where $p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_0),p(\boldsymbol{x}_t|\boldsymbol{x}_0)$ is well known or can be found.
 
 Therefore, we can get the following expression:
 
@@ -413,19 +270,9 @@ p(\mathbf{x}_{t-1} \vert \mathbf{x}_t, \mathbf{x}_0)
 \end{aligned}
 $$
 
-Recall that
+Recall that $f(x)=\frac{1}{\sqrt{2 \pi} \sigma_f} exp\Big({-\frac{1}{2}\frac{\left(x-\color{blue}{\mu_f}\right)^2}{\color{red}{\sigma_f^2}}}\Big) = \boldsymbol{N}(\mu_f, \sigma^2_f)$
 
-$$
-f(x)=\frac{1}{\sqrt{2 \pi} \sigma_f} exp\Big({-\frac{1}{2}\frac{\left(x-\color{black}{\mu_f}\right)^2}{\color{black}{\sigma_f^2}}}\Big) = \boldsymbol{N}(\mu_f, \sigma^2_f)
-$$
-
-We can focus on getting the coefficient of
-
-$$
-\boldsymbol{x}_{t-1}^2
-$$
-
-as this term is quadratic, this implies the final format also follow gaussian distribution. We get the quadratic form by [completing the square](https://www.mathsisfun.com/algebra/completing-square.html):
+We can focus on getting the coefficient of $\boldsymbol{x}_{t-1}^2$. As this term is quadratic, this implies the final format also follow gaussian distribution. We get the quadratic form by [completing the square](https://www.mathsisfun.com/algebra/completing-square.html):
 
 $$
 \begin{aligned}
@@ -455,4 +302,3 @@ $$
 \therefore p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t}\boldsymbol{x}_0,\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)
 \end{equation}
 $$
-
