@@ -185,15 +185,21 @@ $$\tiny Hello!$$
 
 ## Inline equation
 
-$$
-z = x\times y
-$$
+$z = x\times y$
+```
+$ z = x\times y $
+```
 
 ## Display equation
 
 $$
 z = x \times y
 $$
+```
+$$
+z = x \times y
+$$
+```
 
 ## Operators
 
