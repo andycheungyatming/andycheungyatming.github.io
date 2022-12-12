@@ -234,8 +234,18 @@ $$
 However, we do not know the expression formulas of $p(\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_t)$. Luckily, we can add one more condition$\boldsymbol{x}_0$ s.t.
 
 $$
+\begin{aligned}
+p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) &= \frac{p(\boldsymbol{x}_{t-1},\boldsymbol{x}_t, \boldsymbol{x}_0)}{p(\boldsymbol{x}_t, \boldsymbol{x}_0)}\\
+&= \frac{p(\boldsymbol{x}_{t}|\boldsymbol{x}_{t-1}, \boldsymbol{x}_0)p(\boldsymbol{x}_{t-1}, \boldsymbol{x}_0)}{p(\boldsymbol{x}_t| \boldsymbol{x}_0)p(\boldsymbol{x}_0)}\\
+&= \frac{p(\boldsymbol{x}_{t}|\boldsymbol{x}_{t-1}, \boldsymbol{x}_0)p(\boldsymbol{x}_{t-1}| \boldsymbol{x}_0)\cancel{p(\boldsymbol{x}_0)}}{p(\boldsymbol{x}_t| \boldsymbol{x}_0)\cancel{p(\boldsymbol{x}_0)}}\\
+\end{aligned}
+$$
+
+Therefore, in diffusion model, 
+
+$$
 \begin{equation}
-p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_0)}{p(\boldsymbol{x}_t|\boldsymbol{x}_0)}
+p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)= \frac{p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_0)}{p(\boldsymbol{x}_t|\boldsymbol{x}_0)}
 \end{equation}
 $$
 
