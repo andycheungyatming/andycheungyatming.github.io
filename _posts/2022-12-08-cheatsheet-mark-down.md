@@ -4,6 +4,7 @@ title: "Markdown Cheatsheet"
 author: "Allan Chan"
 header-style: text
 catalog: true
+mathjax:	true
 tags: 
     - cheatsheet
     - markdown

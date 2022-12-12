@@ -4,7 +4,7 @@ title:        "Review: Denoising Diffusion Probabilistic Models (DDPM)"
 author:       "Allan"
 header-style: text
 catalog:      true
-usemathjax: true
+mathjax:      true
 tags:
     - AI
     - Review
