@@ -21,17 +21,9 @@ Denoising Diffusion Probabilistic Models (DDPM) is introduced in [(Ho et al., 20
 
 > The Markov chain of forward (reverse) diffusion process of generating a sample by slowly adding (removing) noise.
 
-we can let a image smaple(from real data distribution)
+we can let a image smaple(from real data distribution) $\mathbf{x}_0 \sim q(\mathbf{x})$
 
-$$
-\mathbf{x}_0 \sim q(\mathbf{x})
-$$
-
-Usually we will also define steps
-
-$$
-T
-$$
+Usually we will also define steps $T$
 
 , where step size is controlled by
 
