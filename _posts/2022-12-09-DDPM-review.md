@@ -312,3 +312,51 @@ $$
 \therefore p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t}\boldsymbol{x}_0,\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)
 \end{equation}
 $$
+
+## Revisit of denoising (reverse) process
+
+We have $ p(x_{t-1} \vert x_t, x_0) $, which has explicit expression from gaussian distribution. However, we cannot rely on getting $ x_0 $ to express such expression. $ x_0 $ should be our final output. 
+
+> Therefore, can we use $ x_t $ to predict $ x_0 $ s.t. we can escape the term of $ x_0 $ in $ p(x_{t-1} \vert x_t, x_0) $ ?
+
+With the model $ \bar{u}(x_t) \text{ that predict } x_0 \text{ , where loss function } \boldsymbol{L} = \Vert x_0 - \bar{u}(x_t) \Vert^2$. This idea leads to the following expression:
+
+$$
+\begin{equation}
+p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) \approx p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0=\bar{\boldsymbol{\mu}}(\boldsymbol{x}_t)) = \mathcal{N}\left(\boldsymbol{x}_{t-1}; \frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t}\bar{\boldsymbol{\mu}}(\boldsymbol{x}_t),\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)
+\end{equation}
+$$
+
+The word **denoising** in DDPM is coming from the loss function $ \Vert x_0 - \bar{u}(x_t) \Vert^2$ , where $x_0$ is the raw image (data) and $x_t$ refers to lossy image (data).
+
+Recall 
+$$
+\begin{aligned}
+    p(\boldsymbol{x}_t \vert \boldsymbol{x}_0) &= \boldsymbol{N}(\boldsymbol{x}_t; \sqrt{\bar{\alpha}_t} 
+    \boldsymbol{x}_0, \bar{\beta}_t\boldsymbol{I}) \\
+\boldsymbol{x}_t &= \sqrt{\bar{\alpha}_t} \boldsymbol{x}_0 + \sqrt{\bar{\beta}_t} \boldsymbol{\varepsilon},\boldsymbol{\varepsilon}\sim\mathcal{N}(\boldsymbol{0}, \boldsymbol{I}) \\
+x_0 &= \frac{1}{\sqrt{\bar{\alpha_t}}}(x_t-\sqrt{\bar{\beta_t}}\boldsymbol{\epsilon)} \\
+i.e. \space \bar{u}(x_t) &= \frac{1}{\sqrt{\bar{\alpha_t}}}\big(x_t-\sqrt{\bar{\beta_t}}\boldsymbol{\epsilon_\theta (x_t, t)}\big) \\
+\boldsymbol{Loss} &= \frac{\beta_t}{\alpha_t}\left\Vert \boldsymbol{\varepsilon}_t - \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{\bar{\beta}}\boldsymbol{\bar{\epsilon}}, t)\right\Vert^2
+\end{aligned}
+$$
+
+Insert $\bar{u(t)}$ into equation 6, we will get
+
+$$
+\begin{aligned}
+    p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) \approx p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0=\bar{\boldsymbol{\mu}}(\boldsymbol{x}_t)) &= \mathcal{N}\left(\boldsymbol{x}_{t-1}; \frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t}\Big( \frac{1}{\sqrt{\bar{\alpha_t}}}\big(x_t-\sqrt{\bar{\beta_t}}\boldsymbol{\epsilon_\theta (x_t, t)}\big) \Big),\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right) \\
+    \frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t}\Big( \frac{1}{\sqrt{\bar{\alpha_t}}}\big(x_t-\sqrt{\bar{\beta_t}}\boldsymbol{\epsilon_\theta (x_t, t)}\big) \Big) &= \frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t \sqrt{\bar{\alpha_t}}}\big(x_t-\sqrt{\bar{\beta_t}}\boldsymbol{\epsilon_\theta (x_t, t)}\big) \\
+    &= \Big(\frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t} + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t \sqrt{\bar{\alpha_t}}} \Big)x_t - \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{\bar{\beta}_t \sqrt{\bar{\alpha_t}}}\sqrt{\bar{\beta_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \\
+    &= \frac{\sqrt{\bar{\alpha_t}}\sqrt{\alpha_t}\bar{\beta}_{t-1} + \sqrt{\bar{\alpha}_{t-1}}\beta_t}{\sqrt{\bar{\alpha_t}}\bar{\beta}_t}x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t} \sqrt{\alpha_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \\
+    &= \big(\frac{\alpha_t(1-\bar{\alpha_{t-1}}) + \beta_t}{\sqrt{\alpha_t}\bar{\beta_t}}\big)x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t} \sqrt{\alpha_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \\
+    &= \big(\frac{(1-\beta_t)-\bar{\alpha_{t}} + \beta_t}{\sqrt{\alpha_t}\bar{\beta_t}}\big)x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t} \sqrt{\alpha_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \\
+    &= \big(\frac{\bar{\beta_t}}{\sqrt{\alpha_t}\bar{\beta_t}}\big)x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t} \sqrt{\alpha_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \\
+    &= \frac{1}{\sqrt{\alpha_t}}\big(x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \big)
+\end{aligned}
+\\
+\begin{equation}
+    \therefore p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) \approx p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0 =\bar{\boldsymbol{\mu}}(\boldsymbol{x}_t)) = \mathcal{N}\left(\boldsymbol{x}_{t-1}; \frac{1}{\sqrt{\alpha_t}}\big(x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \big),\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)
+\end{equation}
+
+$$
