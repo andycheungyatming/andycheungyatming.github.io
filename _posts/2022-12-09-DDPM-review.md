@@ -358,5 +358,27 @@ $$
 \begin{equation}
     \therefore p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) \approx p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0 =\bar{\boldsymbol{\mu}}(\boldsymbol{x}_t)) = \mathcal{N}\left(\boldsymbol{x}_{t-1}; \frac{1}{\sqrt{\alpha_t}}\big(x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \big),\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)
 \end{equation}
-
 $$
+
+## Special Case in Variance Choice
+As mentioned, we cannot apply $ p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}$ directly as $ p(x_{t-1}) $ and  $p(\boldsymbol{x}_t) = \int p(\boldsymbol{x}_t|\boldsymbol{x}_0)\tilde{p}(\boldsymbol{x}_0)d\boldsymbol{x}_0 $ is unknown as we cannot get $ \tilde{p}(\boldsymbol{x}_0)$ in advance, except: 
+
+### Case 1: Only one sample in dataset
+The dataset has only $ \boldsymbol{0} $ and $ \tilde{p}(\boldsymbol{x}_0) = \delta(\boldsymbol{x}_0) $
+$$
+\begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0=\boldsymbol{0}) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t,\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)\end{equation}
+$$
+
+We can get variance as $ \frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} $. This is one of the choice on variance **without loss of generality**.
+
+### Case 2: datasets follow standard gaussian distribution
+
+We will get 
+$$
+\begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\alpha_t\boldsymbol{x}_t,\beta_t \boldsymbol{I}\right)\end{equation}
+$$
+
+and variance as $ \beta_t $
+
+
+
