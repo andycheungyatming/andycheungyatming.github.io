@@ -371,6 +371,10 @@ $$
 \begin{equation}p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)\xrightarrow{\text{approx}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t)\end{equation}
 $$
 
+We have found that 
+- **Loss function** is only related to $p(x_t\vert x_0)$
+- **Sampling process** only rely on $p(x_{t-1} \vert x_t)$
+
 ## Special Case in Variance Choice
 As mentioned, we cannot apply $p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1}) p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}$ directly as $p(x_{t-1})$ and $p(\boldsymbol{x}_t) = \int p(\boldsymbol{x}_t|\boldsymbol{x}_0)\tilde{p}(\boldsymbol{x}_0)d\boldsymbol{x}_0$ 
 is unknown, where we cannot get 
@@ -397,3 +401,14 @@ and variance as $ \beta_t $
 
 Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). The concpet of DDIM is to apply a new sampling method s.t. the denosiing process can be speed up. 
 
+### Recall for DDPM Bayes Derivation 
+> $$
+>\begin{aligned}p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)\xrightarrow{\text{approx}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t)\end{aligned}
+>$$
+> We have found that 
+>- **Loss function** is only related to $p(x_t\vert x_0)$
+>- **Sampling process** only rely on $p(x_{t-1} \vert x_t)$
+
+Therefore, we can make a further assumption based on the derivation result.
+> Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
+> $$p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)$$
