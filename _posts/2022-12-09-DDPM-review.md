@@ -365,7 +365,9 @@ $$
 $$
 
 ## Special Case in Variance Choice
-As mentioned, we cannot apply $ p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}$ directly as $ p(x_{t-1}) $ and  $p(\boldsymbol{x}_t) = \int p(\boldsymbol{x}_t|\boldsymbol{x}_0)\tilde{p}(\boldsymbol{x}_0)d\boldsymbol{x}_0 $ is unknown as we cannot get $ \tilde{p}(\boldsymbol{x}_0)$ in advance, except: 
+As mentioned, we cannot apply $p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1}) p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}$ directly as $p(x_{t-1})$ and $p(\boldsymbol{x}_t) = \int p(\boldsymbol{x}_t|\boldsymbol{x}_0)\tilde{p}(\boldsymbol{x}_0)d\boldsymbol{x}_0$ 
+is unknown, where we cannot get 
+$\tilde{p}(\boldsymbol{x}_0)$ in advance, except: 
 
 ### Case 1: Only one sample in dataset
 The dataset has only $ \boldsymbol{0} $ and $ \tilde{p}(\boldsymbol{x}_0) = \delta(\boldsymbol{x}_0) $
