@@ -356,7 +356,9 @@ $$
     &= \big(\frac{\bar{\beta_t}}{\sqrt{\alpha_t}\bar{\beta_t}}\big)x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t} \sqrt{\alpha_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \\
     &= \frac{1}{\sqrt{\alpha_t}}\big(x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \big)
 \end{aligned}
-\\
+$$
+
+$$
 \begin{equation}
     \therefore p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) \approx p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0 =\bar{\boldsymbol{\mu}}(\boldsymbol{x}_t)) = \mathcal{N}\left(\boldsymbol{x}_{t-1}; \frac{1}{\sqrt{\alpha_t}}\big(x_t - \frac{\beta_t}{\sqrt{\bar{\beta}_t}}\boldsymbol{\epsilon_\theta (x_t, t)} \big),\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)
 \end{equation}
