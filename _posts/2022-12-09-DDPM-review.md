@@ -317,7 +317,9 @@ $$
 
 We have $ p(x_{t-1} \vert x_t, x_0) $, which has explicit expression from gaussian distribution. However, we cannot rely on getting $ x_0 $ to express such expression. $ x_0 $ should be our final output. 
 
-> Therefore, can we use $ x_t $ to predict $ x_0 $ s.t. we can escape the term of $ x_0 $ in $ p(x_{t-1} \vert x_t, x_0) $ ?
+Therefore, we want to make the assumption as follows:
+
+> Can we use $ x_t $ to predict $ x_0 $ s.t. we can escape the term of $ x_0 $ in $ p(x_{t-1} \vert x_t, x_0) $ ?
 
 With the model $ \bar{u}(x_t) \text{ that predict } x_0 \text{ , where loss function } \boldsymbol{L} = \Vert x_0 - \bar{u}(x_t) \Vert^2$. This idea leads to the following expression:
 
