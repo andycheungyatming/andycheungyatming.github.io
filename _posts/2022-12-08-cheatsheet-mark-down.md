@@ -6,8 +6,8 @@ header-style: text
 catalog: true
 mathjax: true
 tags: 
-    - cheatsheet
-    - markdown
+    - Cheatsheet
+    - Markdown
 ---
 This is a very simple markdown cheatsheet for me to recap all command and syntax to write a markdown file.
 
