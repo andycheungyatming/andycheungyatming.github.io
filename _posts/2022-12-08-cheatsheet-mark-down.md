@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Markdown Cheatsheet"
-author: "Allan Chan"
+title: "Cheatsheet: Markdown"
+author: "Allan"
 header-style: text
 catalog: true
 mathjax: true
@@ -186,6 +186,7 @@ $$\tiny Hello!$$
 ## Inline equation
 
 $z = x\times y$
+
 ```
 $ z = x\times y $
 ```
@@ -195,6 +196,7 @@ $ z = x\times y $
 $$
 z = x \times y
 $$
+
 ```
 $$
 z = x \times y
