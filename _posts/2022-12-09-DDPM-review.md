@@ -407,8 +407,47 @@ Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arx
 >$$
 > We have found that 
 >- **Loss function** is only related to $p(x_t\vert x_0)$
->- **Sampling process** only rely on $p(x_{t-1} \vert x_t)$
+>- **Sampling process** only rely on $p(x_{t-1} \vert x_t)$, where the reverse process is a markov chain
 
 Therefore, we can make a further assumption based on the derivation result.
 > Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
 > $$p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)$$
+
+### Method of undetermined coefficients
+> In short, it is just like let $ax^2+bx+c=0$ ...
+
+By marginal probability, we just need
+$$
+\int p(x_{t-1}\vert x_t,x_0)p(x_t\vert x_0)d x_t = p(x_{t-1}\vert x_0)
+$$
+
+> we can recall that $p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0)}{p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)}$ in previous section, $p(x_{t}\vert x_{t-1})$ is not neccessary from marginal probability view. 
+
+Therefore, we have 
+
+> $$1. \space x_t := \sqrt{\alpha_t} x_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}$$
+> $$2. \space x_t = \sqrt{\bar{\alpha_t}} x_{0} + \sqrt{\bar{\beta_t}}\boldsymbol{\bar{\epsilon}_t} \space \text{;where } \boldsymbol{\bar{\epsilon}} \text{means merge of } \epsilon_1, \epsilon_2, \dots, \epsilon_{t}$$
+> $$3. \space x_{t-1} = \sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{\bar{\beta}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1}$$
+
+$$
+\begin{aligned}
+    x_t &= \sqrt{\alpha_t} (\sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{\bar{\beta}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1}) + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \\
+    &= \sqrt{\bar{\alpha}_{t}} x_{0} + \sqrt{\alpha_t}\sqrt{\bar{\beta}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \\
+    \boldsymbol{\bar{\epsilon}}_{t-1} &= \frac{x_t - \sqrt{\bar{\alpha}_{t}} x_{0} - \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}}{\sqrt{\alpha_t}\sqrt{\bar{\beta}_{t-1}}}
+\end{aligned}
+$$
+
+Therefore, we get $\boldsymbol{\bar{\epsilon}}_{t-1}$ into equation 3,  
+$$
+\begin{aligned}
+\mathbf{x}_{t-1} 
+&= \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 +  \sqrt{1 - \bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1} \\
+&= \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 +  \sqrt{1 - \bar{\alpha}_{t-1}}\frac{x_t - \sqrt{\bar{\alpha}_{t}} x_{0} - \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}}{\sqrt{\alpha_t}\sqrt{\bar{\beta}_{t-1}}} \\
+&= \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_{t-1} - \sigma_t^2} \frac{\mathbf{x}_t - \sqrt{\bar{\alpha}_t}\mathbf{x}_0}{\sqrt{1 - \bar{\alpha}_t}} + \sigma_t\boldsymbol{\epsilon} \\
+q_\sigma(\mathbf{x}_{t-1} \vert \mathbf{x}_t, \mathbf{x}_0)
+&= \mathcal{N}(\mathbf{x}_{t-1}; \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_{t-1} - \sigma_t^2} \frac{\mathbf{x}_t - \sqrt{\bar{\alpha}_t}\mathbf{x}_0}{\sqrt{1 - \bar{\alpha}_t}}, \sigma_t^2 \mathbf{I})
+\end{aligned}
+$$
+
+
+
