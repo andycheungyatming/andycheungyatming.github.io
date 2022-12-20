@@ -27,10 +27,7 @@ Usually we will also define steps $T$, where step size is controlled by $\{\beta
 
 With steps $T$, we can produce a sequence of noisy samples $x_1, x_2, ..., x_T = z$
 
-However, it is difficult to rebuild the image from $x_t$ to $x_0$
-
- directly, we need the model to learn the rebuilt process piece by piece.
-i.e.
+However, it is difficult to rebuild the image from $x_t$ to $x_0$ directly, we need the model to learn the rebuilt process piece by piece. i.e.
 
 $$
 x_T \rightarrow x_{T-1} = u(x_T) \rightarrow x_{T-2} = u(x_{T-1}) \rightarrow ... \rightarrow x_1 = u(x_2) \rightarrow x_0 = u(x_1)
@@ -40,12 +37,12 @@ $$
 
 I'd like to use destruction instead of forward process. Basically we want to make a image (with pattern) to a pure gaussian noise by putting more gaussian noise recursively (with a fixed number of steps).
 
-### Merging of two Gaussian
+### Sum of two Gaussian distribution
 
 Two Gaussian ,e.g. $\mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\sigma^2_2 \boldsymbol{I})$ with different variance can be merged to $\mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})$
 
-#### By wiki
-> Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if 
+
+> By [Wiki](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if 
 > $$ 
 > \begin{aligned}
 > X &\sim \mathbb{N}(\mu_X, \sigma^2_X) \\
@@ -207,14 +204,6 @@ in each step.
 
 # DDPM Explanation by Bayes' Perspective
 
-### ~~Product of Gaussian~~
-
-Let $f(x) \text{ and } g(x)$ be Gaussian PDFs, where
-
-$$
-f(x)=\frac{1}{\sqrt{2 \pi} \sigma_f} e^{-\frac{\left(x-\mu_f\right)^2}{2 \sigma_f^2}} \text { and } g(x)=\frac{1}{\sqrt{2 \pi} \sigma_g} e^{-\frac{\left(x-\mu_g\right)^2}{2 \sigma_g^2}}
-$$
-
 ### Completing the Square
 
 We have a quadratic form as follows:
@@ -331,7 +320,7 @@ We have $ p(x_{t-1} \vert x_t, x_0) $, which has explicit expression from gaussi
 
 Therefore, we want to make the assumption as follows:
 
-> Can we use $ x_t $ to predict $ x_0 $ s.t. we can escape the term of $ x_0 $ in $ p(x_{t-1} \vert x_t, x_0) $ ?
+> Can we use $x_t$ to predict $x_0$ s.t. we can escape the term of $x_0$ in $p(x_{t-1} \vert x_t, x_0)$ ?
 
 With the model $ \bar{u}(x_t) \text{ that predict } x_0 \text{ , where loss function } \boldsymbol{L} = \Vert x_0 - \bar{u}(x_t) \Vert^2$. This idea leads to the following expression:
 
@@ -355,7 +344,7 @@ i.e. \space \bar{u}(x_t) &= \frac{1}{\sqrt{\bar{\alpha_t}}}\big(x_t-\sqrt{\bar{\
 \end{aligned}
 $$
 
-Insert $\bar{u(t)}$ into equation 6, we will get
+Insert $\bar{u}(t)$ into equation 6, we will get
 
 $$
 \begin{aligned}
@@ -411,7 +400,7 @@ and variance as $ \beta_t $
 
 ## DDIM 
 
-Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). The concpet of DDIM is to apply a new sampling method s.t. the denosiing process can be speed up. 
+Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). The concpet of DDIM is to apply a new sampling method s.t. the denosiing process can be speed up by given a closed form for reverse process.  
 
 ### Recall for DDPM Bayes Derivation 
 > $$
@@ -424,8 +413,66 @@ Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arx
 Therefore, we can make a further assumption based on the derivation result.
 > Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
 > $$p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)$$
+### Multivariate Guassian Distribution Property (Conditional Distributions)
+By [Wiki](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), if N-dimensional $x$ is partitioned as follows
+$$
+x = \begin{bmatrix*}
+    x_1 \\
+    x_2
+\end{bmatrix*} \text{ with sizes }
+\begin{bmatrix*}
+    q \times 1 \\
+    (N - q) \times 1
+\end{bmatrix*}
+$$
+and accordingly $\mu$ and $\Sigma$ are partitioned as follows
+$$
+\begin{aligned}
+    \mu &= \begin{bmatrix*}
+    \mu_1 \\
+    \mu_2
+\end{bmatrix*} \text{ with sizes }
+\begin{bmatrix*}
+    q \times 1 \\
+    (N - q) \times 1
+\end{bmatrix*} \\
+\Sigma &= 
+\begin{bmatrix*}
+    \Sigma_{11} & \Sigma_{12} \\
+    \Sigma_{21} & \Sigma_{22}
+\end{bmatrix*} \text{ with sizes }
+\begin{bmatrix*}
+    q \times q & q \times (N - q) \\
+    (N - q) \times q & (N-q)\times(N-q)
+\end{bmatrix*} \\ 
+&= \mathbb{E}\Big[ (\mathbf{X}-\mathbf{\mu})(\mathbf{X}-\mathbf{\mu})^T \Big] \\
+&= \mathbb{E}\Big[ 
+    \begin{pmatrix}
+    x_1 - \mu_1 \\
+    x_2 - \mu_2 
+    \end{pmatrix}
+    \begin{pmatrix}
+        (x_1 - \mu_1)^T, (x_2 - \mu_2)^T
+    \end{pmatrix}
+ \Big] \\
+&= 
+    \begin{bmatrix*}
+        \mathbb{E}(x_1 - \mu_1)(x_1 - \mu_1)^T & \mathbb{E}(x_1 - \mu_1)(x_2 - \mu_2)^T \\
+        \mathbb{E}(x_2 - \mu_2)(x_1 - \mu_1)^T & \mathbb{E}(x_2 - \mu_2)(x_2 - \mu_2)^T
+    \end{bmatrix*}
 
-### Method of undetermined coefficients
+\end{aligned} 
+$$
+
+then the distribution of $x_1$ conditional on $x_2 = \mathbf{a}$ is multivariate normal $(x_1 \vert x_2 = \mathbf{a}) \sim N(\bar{\mu}, \bar{\Sigma})$, where
+$$
+\begin{align}
+    \bar{\mu}(x_1 \vert x_2 = \mathbf{a}) &= \mu_1 + \Sigma_{12} \Sigma^{-1}_{22}(a-\mu_2) \\
+    \bar{\Sigma} &= \Sigma_{11} - \Sigma_{12}\Sigma^{-1}_{22}\Sigma_{21}
+\end{align}
+$$
+
+### Speed up by Finding Closed Form of $p(x_{t-1}\vert x_t,x_0)$
 > In short, it is just like let $ax^2+bx+c=0$ ...
 
 By marginal probability, we just need
@@ -437,30 +484,88 @@ $$
 
 Therefore, we have 
 
+> $$ \begin{align}
+    x_t &:= \sqrt{\alpha_t} x_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \\
+    x_{t-1} &= \sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2} \sim \mathbb{N}\big(\sqrt{\bar{\alpha}_{t-1}} x_{0}, (\sqrt{1-\bar{\alpha}_{t-1}})^2I\big)\\
+    \text{By substituting the formula } 14 \rightarrow 13, 
+    x_t &= \sqrt{\alpha_t}(\sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2}) + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \nonumber \\
+    &= \sqrt{\bar{\alpha_t}} x_{0} + \color{blue}{\sqrt{\alpha_t}\sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}} \nonumber \\
+    &= \sqrt{\bar{\alpha_t}} x_{0} + \sqrt{1-\bar{\alpha_t}}\boldsymbol{\bar{\epsilon}_{t-1}} \space \text{;where } \boldsymbol{\bar{\epsilon}_{t-1}} \text{ is merging result of } \epsilon_1, \epsilon_2, \dots, \epsilon_{t-1} \sim \mathbb{N}(0,1) \\
+    &= \mathbb{N}\big(x_t;\sqrt{\bar{\alpha}_{t}} x_{0}, (\sqrt{1-\bar{\alpha}_{t}})^2I\big) \nonumber
+\end{align}
+> $$
 
-> $$1. \space x_t := \sqrt{\alpha_t} x_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}$$
-> $$2. \space x_t = \sqrt{\bar{\alpha_t}} x_{0} + \sqrt{\bar{\beta_t}}\boldsymbol{\bar{\epsilon}_t} \space \text{;where } \boldsymbol{\bar{\epsilon}} \text{means merge of } \epsilon_1, \epsilon_2, \dots, \epsilon_{t}$$
-> $$3. \space x_{t-1} = \sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{\bar{\beta}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1}$$
+Therefore, we form a matrix s.t. (concat two gaussian function still follows gaussian distribution; **proof required**)
+$$
+\mathbf{x} = \begin{bmatrix*}
+    x_{t-1} \\
+    x_t
+\end{bmatrix*} 
+\sim
+\mathbb{N}(
+    \begin{bmatrix*}
+    \sqrt{\bar{\alpha}_{t-1}} x_{0} \\
+    \sqrt{\bar{\alpha_t}} x_{0} 
+    \end{bmatrix*}
+    ,
+    \begin{bmatrix*}
+        (1-\bar{\alpha}_{t-1})I & \Sigma_{12} \\
+        \Sigma_{21} & (1-\bar{\alpha_t})I
+    \end{bmatrix*}
+)
+$$
 
+By substituting the formula of variance, we have 
 $$
 \begin{aligned}
-    x_t &= \sqrt{\alpha_t} (\sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{\bar{\beta}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1}) + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \\
-    &= \sqrt{\bar{\alpha}_{t}} x_{0} + \sqrt{\alpha_t}\sqrt{\bar{\beta}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \\
-    \boldsymbol{\bar{\epsilon}}_{t-1} &= \frac{x_t - \sqrt{\bar{\alpha}_{t}} x_{0} - \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}}{\sqrt{\alpha_t}\sqrt{\bar{\beta}_{t-1}}}
-\end{aligned}
+    \Sigma_{12} &= \mathbb{E}\Big[(x_{t-1} - \sqrt{\bar{\alpha}_{t-1}}x_0)(x_t-\sqrt{\bar{\alpha}_t}x_0)^T \Big] \\
+    &= \mathbb{E}\Big[(\cancel{\sqrt{\bar{\alpha}_{t-1}} x_{0}} + \sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2} - \cancel{\sqrt{\bar{\alpha}_{t-1}} x_{0}})(\cancel{\sqrt{\bar{\alpha_t}} x_{0}} + \sqrt{1-\bar{\alpha_t}}\boldsymbol{\bar{\epsilon}_{t-1}} - \cancel{\sqrt{\bar{\alpha_t}} x_{0}})^T\Big] \\
+    &= \mathbb{E}\Big[(\sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2})(\color{blue}{\sqrt{1-\bar{\alpha_t}}\boldsymbol{\bar{\epsilon}_{t-1}}})^T\Big] \\
+    &= \mathbb{E}\Big[(\sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2})(\color{blue}{\sqrt{\alpha_t}\sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}})^T\Big] \\
+    &= \mathbb{E}\Big[(\sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2})(\sqrt{\alpha_t}\sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2})^T\Big] + {(\sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2})(\sqrt{\beta_t})\cancelto{0}{\mathbb{E}\Big[(\boldsymbol{\epsilon}_{t-1})^T\Big]}} \\
+    &= \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I \\
+    &= \Sigma_{21}^T
+\Sigma_{21} = \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I \\
+\end{aligned} 
 $$
 
-Therefore, we get $\boldsymbol{\bar{\epsilon}}_{t-1}$ into equation 3,  
+Substituting the result to $\mathbf{x}$, we have 
 $$
-\begin{aligned}
-\mathbf{x}_{t-1} 
-&= \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 +  \sqrt{1 - \bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1} \\
-&= \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 +  \sqrt{1 - \bar{\alpha}_{t-1}}\frac{x_t - \sqrt{\bar{\alpha}_{t}} x_{0} - \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}}{\sqrt{\alpha_t}\sqrt{\bar{\beta}_{t-1}}} \\
-&= \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_{t-1} - \sigma_t^2} \frac{\mathbf{x}_t - \sqrt{\bar{\alpha}_t}\mathbf{x}_0}{\sqrt{1 - \bar{\alpha}_t}} + \sigma_t\boldsymbol{\epsilon} \\
-q_\sigma(\mathbf{x}_{t-1} \vert \mathbf{x}_t, \mathbf{x}_0)
-&= \mathcal{N}(\mathbf{x}_{t-1}; \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_{t-1} - \sigma_t^2} \frac{\mathbf{x}_t - \sqrt{\bar{\alpha}_t}\mathbf{x}_0}{\sqrt{1 - \bar{\alpha}_t}}, \sigma_t^2 \mathbf{I})
-\end{aligned}
+\therefore \space
+\begin{equation}
+    \mathbf{x} = \begin{bmatrix*}
+    x_{t-1} \\
+    x_t
+\end{bmatrix*} 
+\sim
+\mathbb{N}(
+    \begin{bmatrix*}
+    \sqrt{\bar{\alpha}_{t-1}} x_{0} \\
+    \sqrt{\bar{\alpha_t}} x_{0} 
+    \end{bmatrix*}
+    ,
+    \begin{bmatrix*}
+        (1-\bar{\alpha}_{t-1})I & \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I \\
+        \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I & (1-\bar{\alpha_t})I
+    \end{bmatrix*}
+)
+\end{equation}
 $$
+Therefore, we can use equation 11 to get:
+$$
+\begin{align}
+    \bar{\mu}(x_1 \vert x_2 = \mathbf{a}) &= \mu_1 + \Sigma_{12} \Sigma^{-1}_{22}(\mathbf{a}-\mu_2) \nonumber\\
+    \mu(x_{t-1}\vert x_t, x_0) &= \sqrt{\bar{\alpha}_{t-1}} x_{0} + \frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}_{t}}\big( x_t - \sqrt{\alpha_t}x_0 \big)
+    
+\end{align}$$
 
+> Remark: 
+>$$
+\begin{gathered}
+    A &= aI \\
+    A^{-1}A &= A^{-1}aI \\
+    \frac{1}{a}I &= A^{-1}
+\end{gathered}
+$$
 
 
