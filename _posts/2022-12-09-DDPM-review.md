@@ -42,7 +42,19 @@ I'd like to use destruction instead of forward process. Basically we want to mak
 
 ### Merging of two Gaussian
 
-Two Gaussian ,e.g.$ \mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\sigma^2_2 \boldsymbol{I}) $ with different variance can be merged to $\mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})$
+Two Gaussian ,e.g. $\mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\sigma^2_2 \boldsymbol{I})$ with different variance can be merged to $\mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})$
+
+#### By wiki
+> Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if 
+> $$ 
+> \begin{aligned}
+> X &\sim \mathbb{N}(\mu_X, \sigma^2_X) \\
+> X &\sim \mathbb{N}(\mu_Y, \sigma^2_Y) \\
+> Z &= X+Y \\
+> \end{aligned} 
+> $$
+> then 
+> $$ Z \sim \mathbb{N}(\mu_X+\mu_Y, \sigma^2_X+\sigma^2_Y)$$
 
 #### Proof
 
