@@ -437,6 +437,7 @@ $$
 
 Therefore, we have 
 
+
 > $$1. \space x_t := \sqrt{\alpha_t} x_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1}$$
 > $$2. \space x_t = \sqrt{\bar{\alpha_t}} x_{0} + \sqrt{\bar{\beta_t}}\boldsymbol{\bar{\epsilon}_t} \space \text{;where } \boldsymbol{\bar{\epsilon}} \text{means merge of } \epsilon_1, \epsilon_2, \dots, \epsilon_{t}$$
 > $$3. \space x_{t-1} = \sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{\bar{\beta}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-1}$$
