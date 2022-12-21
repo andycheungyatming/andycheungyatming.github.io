@@ -58,12 +58,12 @@ $$
 
 Therefore, this time we can more generally let
 $$
-\begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \mathcal{N}(\boldsymbol{x}_{t-1}; \kappa_t \boldsymbol{x}_t + \lambda_t \boldsymbol{x}_0, \sigma_t^2 \boldsymbol{I})\end{equation}
-
+\begin{equation}
+p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \mathcal{N}(\boldsymbol{x}_{t-1}; \kappa_t \boldsymbol{x}_t + \lambda_t \boldsymbol{x}_0, \sigma_t^2 \boldsymbol{I})
+\end{equation}
 $$
 
 and form a table as follows:
-
 $$
 \begin{array}{c|c|c} 
 \hline 
@@ -92,12 +92,12 @@ $$
     \sqrt{\bar{\alpha}_{t-1}} &=  (\kappa_t \sqrt{\bar{\alpha}_t} + \lambda_t) \\
     1 - \bar{\alpha}_{t-1} &= \sqrt{\kappa_t^2(1-\bar{\alpha}_t) + \sigma_t^2}
 \end{cases} \\
-\begin{equation}
-\kappa_t = \sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}},\qquad \lambda_t = \sqrt{\bar{\alpha}_{t-1}} - \sqrt{\bar{\alpha}_t}\sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}}
-\end{equation} \\
-\begin{equation}
-    \therefore p_\sigma\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)=\mathcal{N}\left(\mathbf{x}_{t-1} ; \sqrt{\alpha_{t-1}} \mathbf{x}_0+\sqrt{1-\alpha_{t-1}-\sigma_t^2} \frac{\mathbf{x}_t-\sqrt{\alpha_t} \mathbf{x}_0}{\sqrt{1-\alpha_t}}, \sigma_t^2 \mathbf{I}\right)
-\end{equation}
+\begin{align}
+\kappa_t = \sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}},\qquad \lambda_t = \sqrt{\bar{\alpha}_{t-1}} - \sqrt{\bar{\alpha}_t}\sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}} \\
+
+\therefore p_\sigma\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)=\mathcal{N}\left(\mathbf{x}_{t-1} ; \sqrt{\alpha_{t-1}} \mathbf{x}_0+\sqrt{1-\alpha_{t-1}-\sigma_t^2} \frac{\mathbf{x}_t-\sqrt{\alpha_t} \mathbf{x}_0}{\sqrt{1-\alpha_t}}, \sigma_t^2 \mathbf{I}\right)
+
+\end{align} 
 $$
 
 ## Freedom on Variance $\sigma^2_t$
