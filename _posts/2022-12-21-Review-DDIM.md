@@ -144,9 +144,9 @@ But dont we train a model with only $dim(\tau)$ step?
 
 ## Performance in Different Distribution
 The paper in DDIM has discussed the performance in different setting of $\eta$ and $S$, where $S$ means timestep and $\eta$ is a hyperparameter to scale the randomness. 
+
 $$
 \sigma^2_t= \eta\frac{(1-\bar{\alpha}_{t-1})\beta_t}{(1-\bar{\alpha_t})}, \eta \in [0,1]
-
 $$
 In experiment, both DDPM($\eta=1$) and DDIM($\eta=0$) is trained with T=1000. They observed that DDIM can produce the best quality samples when $S=dim(\tau)$ is small while DDPM does perform better when we can afford to run the full reverse Markov diffusion steps $(S=T=1000)$.
 ![](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/DDIM-results.png)
