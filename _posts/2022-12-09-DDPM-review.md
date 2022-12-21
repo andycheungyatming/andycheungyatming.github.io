@@ -380,11 +380,10 @@ We have found that
 
 ## Special Case in Variance Choice
 As mentioned, we cannot apply $p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1}) p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}$ directly as $p(x_{t-1})$ and $p(\boldsymbol{x}_t) = \int p(\boldsymbol{x}_t|\boldsymbol{x}_0)\tilde{p}(\boldsymbol{x}_0)d\boldsymbol{x}_0$ 
-is unknown, where we cannot get 
-$\tilde{p}(\boldsymbol{x}_0)$ in advance, except: 
+is unknown, where we cannot get $\tilde{p}(\boldsymbol{x}_0)$ in advance, except: 
 
 ### Case 1: Only one sample in dataset
-The dataset has only $ \boldsymbol{0} $ and $ \tilde{p}(\boldsymbol{x}_0) = \delta(\boldsymbol{x}_0) $
+The dataset has only $\boldsymbol{0}$ and $\tilde{p}(\boldsymbol{x}_0) = \delta(\boldsymbol{x}_0)$
 $$
 \begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0=\boldsymbol{0}) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t,\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)\end{equation}
 $$
