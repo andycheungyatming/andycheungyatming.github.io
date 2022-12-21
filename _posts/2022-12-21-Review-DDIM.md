@@ -92,9 +92,9 @@ Therefore, we just have 2 equation for 3 unknown, let a free parameter $\sigma^2
 $$
 \begin{cases}
     \sqrt{\bar{\alpha}_{t-1}} &=  (\kappa_t \sqrt{\bar{\alpha}_t} + \lambda_t) \\
-    1 - \bar{\alpha}_{t-1} &= \sqrt{\kappa_t^2(1-\bar{\alpha}_t) + \sigma_t^2}
+    1 - \bar{\alpha}_{t-1} &= \sqrt{\kappa_t^2(1-\bar{\alpha}_t) + \sigma_t^2} \\
 \end{cases} \\
-\begin{align}
+\begin{align} 
 \kappa_t = \sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}},\qquad \lambda_t = \sqrt{\bar{\alpha}_{t-1}} - \sqrt{\bar{\alpha}_t}\sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}} \\
 \therefore p_\sigma\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)=\mathcal{N}\left(\mathbf{x}_{t-1} ; \sqrt{\alpha_{t-1}} \mathbf{x}_0+\sqrt{1-\alpha_{t-1}-\sigma_t^2} \frac{\mathbf{x}_t-\sqrt{\alpha_t} \mathbf{x}_0}{\sqrt{1-\alpha_t}}, \sigma_t^2 \mathbf{I}\right)
 \end{align} 
@@ -103,7 +103,7 @@ $$
 ## Freedom on Variance $\sigma^2_t$
 We can observe that we have a new hyperparameter $\sigma^2_t$. We can take some example from [previous blog](2022-12-21-DDPM-Bayes.md).
 
-### 1. Take $\sigma^2_t= \frac{(1-\bar{\alpha}_{t-1})\beta_t}{(1-\bar{\alpha_t})}$ (Same as DDPM)
+### 1. Take $$\sigma^2_t=\frac{(1-\bar{\alpha}_{t-1})\beta_t}{(1-\bar{\alpha_t})}$$ (Same as DDPM)
 
 The paper in DDIM has discussed the performance when 
 $$
