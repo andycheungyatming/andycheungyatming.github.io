@@ -419,6 +419,7 @@ Therefore, we can make a further assumption based on the derivation result.
 
 ### Multivariate Guassian Distribution Property (Conditional Distributions)
 By [Wiki](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), if N-dimensional $x$ is partitioned as follows
+
 $$
 x = \begin{bmatrix}
     x_1 \\
@@ -429,7 +430,9 @@ x = \begin{bmatrix}
     (N - q) \times 1
 \end{bmatrix}
 $$
+
 and accordingly $\mu$ and $\Sigma$ are partitioned as follows
+
 $$
 \begin{aligned}
     \mu &= \begin{bmatrix}
