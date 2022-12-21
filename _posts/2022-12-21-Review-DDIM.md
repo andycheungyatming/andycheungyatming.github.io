@@ -111,7 +111,12 @@ $$
 $$
 
 ### 2. Take $\sigma^2_t=0$
-By letting $\sigma^2_t=0$ and starting at $x_\tau=z$, the forward pass process will become deterministic, meaning that model will generate predicted $x_0$ directly.
+By letting $\sigma^2_t=0$
+ and starting at 
+$x_\tau=z$
+, the forward pass process will become deterministic, meaning that model will generate predicted 
+$x_0$
+ directly.
 
 ## Speed up from Non-Markov Forward Pass
 ![圖 1](https://s2.loli.net/2022/12/21/DJa5UmE2WRFzqd4.png)  
