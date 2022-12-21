@@ -329,6 +329,7 @@ $$
 $$
 
 Substituting the result to $\mathbf{x}$, we have 
+
 $$
 \therefore \space
 \begin{equation}
@@ -350,7 +351,9 @@ $$
 )
 \end{equation}
 $$
+
 Therefore, we can use equation 11 to get:
+
 $$
 \begin{align}
     \bar{\mu}(x_1 \vert x_2 = \mathbf{a}) &= \mu_1 + \Sigma_{12} \Sigma^{-1}_{22}(\mathbf{a}-\mu_2) \nonumber\\
@@ -362,7 +365,8 @@ $$
     &=  \frac{(1-\bar{\alpha}_{t-1})\big(1-\bar{\alpha_t} - \alpha_t+\bar{\alpha}_{t})\big)}{(1-\bar{\alpha_t})}I\nonumber \\
     &= \frac{(1-\bar{\alpha}_{t-1})\big(1 - \alpha_t)\big)}{(1-\bar{\alpha_t})}I \nonumber \\
     \Sigma(x_{t-1}\vert x_t, x_0) &= \frac{(1-\bar{\alpha}_{t-1})\beta_t}{(1-\bar{\alpha_t})}I
-\end{align}$$
+\end{align}
+$$
 
 Remark: 
 
