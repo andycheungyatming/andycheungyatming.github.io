@@ -121,8 +121,15 @@ $$x_0$$
 
 ## Speed up from Non-Markov Forward Pass
 ![圖 1](https://s2.loli.net/2022/12/21/DJa5UmE2WRFzqd4.png)  
-We can observe that we skipped $p(x_t\vert x_{t-1})$. $\alpha_t$ and $\bar{\alpha}_t$ is deterministic and are hyperparameters. As denoising objective $\left\Vert\boldsymbol{\varepsilon} - \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\bar{\alpha}_t \boldsymbol{x}_0 + \bar{\beta}_t \boldsymbol{\varepsilon}, t)\right\Vert^2
-$ (which describe we want a model to predict $x_0$ from $x_t$) does not depend on the specific forward procedure as long as $p(x_t|x_0)$ is fixed, we may also consider forward processes with lengths smaller than T, which accelerates the corresponding generative processes without having to train a different model.
+We can observe that we skipped 
+$$p(x_t\vert x_{t-1})$$
+. 
+$$\alpha_t$$
+ and 
+$$\bar{\alpha}_t$$
+ is deterministic and are hyperparameters. As denoising objective 
+ $$\left\Vert\boldsymbol{\varepsilon} - \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\bar{\alpha}_t \boldsymbol{x}_0 + \bar{\beta}_t \boldsymbol{\varepsilon}, t)\right\Vert^2$$
+ (which describe we want a model to predict $x_0$ from $x_t$) does not depend on the specific forward procedure as long as $p(x_t|x_0)$ is fixed, we may also consider forward processes with lengths smaller than T, which accelerates the corresponding generative processes without having to train a different model.
 
 > In DDIM view, if we have trained $x_1, x_2, \dots, x_{1000}$ to predict $x_0$, meaning we have 1000 model that train to map $x_1 \rightarrow x_0, x_2 \rightarrow x_0, \dots, x_{1000} \rightarrow x_0$.
 
