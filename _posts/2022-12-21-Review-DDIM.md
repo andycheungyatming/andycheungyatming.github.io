@@ -57,6 +57,7 @@ $$
 $$
 
 Therefore, this time we can more generally let
+
 $$
 \begin{equation}
 p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \mathcal{N}(\boldsymbol{x}_{t-1}; \kappa_t \boldsymbol{x}_t + \lambda_t \boldsymbol{x}_0, \sigma_t^2 \boldsymbol{I})
@@ -86,7 +87,8 @@ p(\boldsymbol{x}_t|\boldsymbol{x}_0) d\boldsymbol{x}_t\end{array}} = p(x_{t-1}\v
 \end{array}
 $$
 
-Therefore, we just have 2 equation for 3 unknown, let a free parameter $\sigma^2$
+Therefore, we just have 2 equation for 3 unknown, let a free parameter $\sigma^2$ and define:
+
 $$
 \begin{cases}
     \sqrt{\bar{\alpha}_{t-1}} &=  (\kappa_t \sqrt{\bar{\alpha}_t} + \lambda_t) \\
@@ -94,9 +96,7 @@ $$
 \end{cases} \\
 \begin{align}
 \kappa_t = \sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}},\qquad \lambda_t = \sqrt{\bar{\alpha}_{t-1}} - \sqrt{\bar{\alpha}_t}\sqrt{\frac{(1-\bar{\alpha}_{t-1})^2 - \sigma_t^2}{1-\bar{\alpha}_t}} \\
-
 \therefore p_\sigma\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)=\mathcal{N}\left(\mathbf{x}_{t-1} ; \sqrt{\alpha_{t-1}} \mathbf{x}_0+\sqrt{1-\alpha_{t-1}-\sigma_t^2} \frac{\mathbf{x}_t-\sqrt{\alpha_t} \mathbf{x}_0}{\sqrt{1-\alpha_t}}, \sigma_t^2 \mathbf{I}\right)
-
 \end{align} 
 $$
 
