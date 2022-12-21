@@ -74,7 +74,7 @@ netease_comment: false
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "Nobody but true"
+sidebar-about-description: "Nobody"
 sidebar-avatar: https://media-exp1.licdn.com/dms/image/C5603AQGD3MVwx5qPnQ/profile-displayphoto-shrink_400_400/0/1616995860079?e=1675900800&v=beta&t=vPgHfQVuTN7szDIYb9-lnlzToBxvXnvd068QUS8j4yc # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
