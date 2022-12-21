@@ -111,11 +111,12 @@ $$
 $$
 
 ### 2. Take $\sigma^2_t=0$
-By letting $\sigma^2_t=0$
- and starting at 
-$x_\tau=z$
+By letting 
+$$\sigma^2_t=0$$ 
+and starting at 
+$$x_\tau=z$$
 , the forward pass process will become deterministic, meaning that model will generate predicted 
-$x_0$
+$$x_0$$
  directly.
 
 ## Speed up from Non-Markov Forward Pass
