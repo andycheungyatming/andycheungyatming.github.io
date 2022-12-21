@@ -1,6 +1,6 @@
 ---
 layout:       post
-title:        "Review: Denoising Diffusion Probabilistic Models (DDPM) 2"
+title:        "Review: Denoising Diffusion Probabilistic Models (DDPM)"
 author:       "Allan"
 header-style: text
 catalog:      true
