@@ -5,6 +5,7 @@ author:       "Allan"
 header-style: text
 catalog:      true
 mathjax:      true
+publish:      false
 tags:
     - AI
     - Review
@@ -41,19 +42,21 @@ I'd like to use destruction instead of forward process. Basically we want to mak
 
 Two Gaussian ,e.g. $\mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\sigma^2_2 \boldsymbol{I})$ with different variance can be merged to $\mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})$
 
-
-> By [Wiki](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if 
-> 
-> $$ 
+> By [Wiki](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if
+>
+> $$
 > \begin{aligned}
 > X &\sim \mathbb{N}(\mu_X, \sigma^2_X) \\
 > X &\sim \mathbb{N}(\mu_Y, \sigma^2_Y) \\
 > Z &= X+Y \\
-> \end{aligned} 
+> \end{aligned}
 > $$
-> 
-> then 
-> $$ Z \sim \mathbb{N}(\mu_X+\mu_Y, \sigma^2_X+\sigma^2_Y)$$
+>
+> then
+>
+> $$
+> Z \sim \mathbb{N}(\mu_X+\mu_Y, \sigma^2_X+\sigma^2_Y)
+> $$
 
 #### Proof
 
@@ -72,6 +75,7 @@ $$
 As $X_i \sim \mathbb{N}(\mu_i, \Sigma_i), i=1 \cdots N,$, we have claim they are i.i.d. Hence the covariances are zero. i.e. $\textbf{Cov}(X_i,X_j)=0$
 
 A newly aggregated these Gaussian distributions is defined as a weighted sum:
+
 $$
 X=\sum_{i=1}^{N} a_i X_i=\sum_{i=1}^{N} \frac{n_i}{\sum_{l=1}^{N}n_l} X_i, \\ 
 \text{where} \sum_{i=1}^N a_i = 1
@@ -93,8 +97,12 @@ $$
 ### Details on destruction process
 
 we define each step as
-$$\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \epsilon_t \sim \boldsymbol{N}(0, \boldsymbol{I}), \text{ where } \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0$$
- and let 
+
+$$
+\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \epsilon_t \sim \boldsymbol{N}(0, \boldsymbol{I}), \text{ where } \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0
+$$
+
+ and let
 $\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$
 , we have
 
@@ -117,7 +125,6 @@ $$
 where $\boldsymbol{\bar{\epsilon}}$ is a sum of i.i.d gaussian noise
 
 Therefore, we can observe by more steps iterated, the more image will be converted to pure noise.
-
 
 ### Schedule
 
@@ -204,6 +211,7 @@ which is simply an expression of
 $$
 x_{t-1} \approx x_t - noise, \text{where } noise \sim \boldsymbol{N}(0,I)
 $$
+
 in each step.
 
 # DDPM Explanation by Bayes' Perspective
@@ -220,7 +228,8 @@ $$
 \end{aligned}
 $$
 
-By formulas, we have 
+By formulas, we have
+
 $$
 \begin{gather}
 \therefore d = \frac{b}{2a} \\
@@ -246,7 +255,7 @@ p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) &= \frac{p(\boldsymbo
 \end{aligned}
 $$
 
-Therefore, in diffusion model, 
+Therefore, in diffusion model,
 
 $$
 \begin{equation}
@@ -298,7 +307,7 @@ a = \frac{\alpha_t}{\beta_t} + \frac{1}{\bar{\beta}_{t-1}} = \frac{\alpha_t\bar{
 \end{aligned}
 $$
 
-Therefore, 
+Therefore,
 
 $$
 \begin{aligned}
@@ -310,7 +319,7 @@ d = \frac{b}{2a}
 \end{aligned}
 $$
 
-We can get the final distribution expression s.t. 
+We can get the final distribution expression s.t.
 
 $$
 \begin{equation} 
@@ -320,7 +329,7 @@ $$
 
 ## Revisit of denoising (reverse) process
 
-We have $p(x_{t-1} \vert x_t, x_0)$, which has explicit expression from gaussian distribution. However, we cannot rely on getting $x_0$ to express such expression. $x_0$ should be our final output. 
+We have $p(x_{t-1} \vert x_t, x_0)$, which has explicit expression from gaussian distribution. However, we cannot rely on getting $x_0$ to express such expression. $x_0$ should be our final output.
 
 Therefore, we want to make the assumption as follows:
 
@@ -336,7 +345,8 @@ $$
 
 The word **denoising** in DDPM is coming from the loss function $ \Vert x_0 - \bar{u}(x_t) \Vert^2$ , where $x_0$ is the raw image (data) and $x_t$ refers to lossy image (data).
 
-Recall 
+Recall
+
 $$
 \begin{aligned}
     p(\boldsymbol{x}_t \vert \boldsymbol{x}_0) &= \boldsymbol{N}(\boldsymbol{x}_t; \sqrt{\bar{\alpha}_t} 
@@ -372,25 +382,38 @@ $$
 ## Conclusion
 
 In short, we have discussed the derivation as follows:
+
 $$
 \begin{equation}p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)\xrightarrow{\text{approx}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t)\end{equation}
 $$
 
-We have found that 
+We have found that
+
 - **Loss function** is only related to $p(x_t\vert x_0)$
 - **Sampling process** only rely on $p(x_{t-1} \vert x_t)$
 
 ## Special Case in Variance Choice
-As mentioned, we cannot apply 
-$$p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}$$
-directly as 
-$p(x_{t-1})$ 
-and 
-$$p(\boldsymbol{x}_t) = \int p(\boldsymbol{x}_t|\boldsymbol{x}_0)\tilde{p}(\boldsymbol{x}_0)d\boldsymbol{x}_0$$
-is unknown, where we cannot get $\tilde{p}(\boldsymbol{x}_0)$ in advance, except: 
+
+As mentioned, we cannot apply
+
+$$
+p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1})}{p(\boldsymbol{x}_t)}
+$$
+
+directly as
+$p(x_{t-1})$
+and
+
+$$
+p(\boldsymbol{x}_t) = \int p(\boldsymbol{x}_t|\boldsymbol{x}_0)\tilde{p}(\boldsymbol{x}_0)d\boldsymbol{x}_0
+$$
+
+is unknown, where we cannot get $\tilde{p}(\boldsymbol{x}_0)$ in advance, except:
 
 ### Case 1: Only one sample in dataset
+
 The dataset has only $\boldsymbol{0}$ and $\tilde{p}(\boldsymbol{x}_0) = \delta(\boldsymbol{x}_0)$
+
 $$
 \begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0=\boldsymbol{0}) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\frac{\sqrt{\alpha_t}\bar{\beta}_{t-1}}{\bar{\beta}_t}\boldsymbol{x}_t,\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t} \boldsymbol{I}\right)\end{equation}
 $$
@@ -399,33 +422,39 @@ We can get variance as $\frac{\bar{\beta}_{t-1}\beta_t}{\bar{\beta}_t}$. This is
 
 ### Case 2: datasets follow standard gaussian distribution
 
-We will get 
+We will get
+
 $$
 \begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t) = \mathcal{N}\left(\boldsymbol{x}_{t-1};\alpha_t\boldsymbol{x}_t,\beta_t \boldsymbol{I}\right)\end{equation}
-$$ 
+$$
+
 and variance as
 $\beta_t$
 
-## DDIM 
+## DDIM
 
-Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). The concpet of DDIM is to apply a new sampling method s.t. the denosiing process can be speed up by given a closed form for reverse process.  
+Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). The concpet of DDIM is to apply a new sampling method s.t. the denosiing process can be speed up by given a closed form for reverse process.
 
-### Recall for DDPM Bayes Derivation 
+### Recall for DDPM Bayes Derivation
+
 > $$
->\begin{aligned}p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)\xrightarrow{\text{approx}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t)\end{aligned}
+> \begin{aligned}p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)\xrightarrow{\text{approx}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t)\end{aligned}
 > $$
-> We have found that 
->- **Loss function** is only related to $p(x_t\vert x_0)$
->- **Sampling process** only rely on $p(x_{t-1} \vert x_t)$, where the reverse process is a markov chain
+>
+> We have found that
+>
+> - **Loss function** is only related to $p(x_t\vert x_0)$
+> - **Sampling process** only rely on $p(x_{t-1} \vert x_t)$, where the reverse process is a markov chain
 
 Therefore, we can make a further assumption based on the derivation result.
-Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
+Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t.
+
 $$
 p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)
 $$
 
-
 ### Multivariate Guassian Distribution Property (Conditional Distributions)
+
 By [Wiki](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), if N-dimensional $x$ is partitioned as follows
 
 $$
@@ -476,10 +505,11 @@ $$
         \mathbb{E}(x_2 - \mu_2)(x_1 - \mu_1)^T & \mathbb{E}(x_2 - \mu_2)(x_2 - \mu_2)^T
     \end{bmatrix}
 
-\end{aligned} 
+\end{aligned}
 $$
 
 then the distribution of $x_1$ conditional on $x_2 = \mathbf{a}$ is multivariate normal $(x_1 \vert x_2 = \mathbf{a}) \sim N(\bar{\mu}, \bar{\Sigma})$, where
+
 $$
 \begin{align}
     \bar{\mu}(x_1 \vert x_2 = \mathbf{a}) &= \mu_1 + \Sigma_{12} \Sigma^{-1}_{22}(a-\mu_2) \\
@@ -488,20 +518,26 @@ $$
 $$
 
 ### Speed up by Finding Closed Form of $p(x_{t-1}\vert x_t,x_0)$
+
 In short, it is just like let $ax^2+bx+c=0$ ...
 
 By marginal probability, we just need
+
 $$
 \int p(x_{t-1}\vert x_t,x_0)p(x_t\vert x_0)d x_t = p(x_{t-1}\vert x_0)
 $$
 
-we can recall that 
-$$p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0)}{p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)}$$
- in previous section, $p(x_{t}\vert x_{t-1})$ is not neccessary from marginal probability. 
+we can recall that
 
-Therefore, we have 
+$$
+p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0)}{p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)}
+$$
 
-$$ 
+ in previous section, $p(x_{t}\vert x_{t-1})$ is not neccessary from marginal probability.
+
+Therefore, we have
+
+$$
 \begin{align}
     x_t &:= \sqrt{\alpha_t} x_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \\
     x_{t-1} &= \sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2} \sim \mathbb{N}\big(\sqrt{\bar{\alpha}_{t-1}} x_{0}, (\sqrt{1-\bar{\alpha}_{t-1}})^2I\big)\\
@@ -514,6 +550,7 @@ $$
 $$
 
 Therefore, we form a matrix s.t. (concat two gaussian function still follows gaussian distribution; **proof required**)
+
 $$
 \mathbf{x} = \begin{bmatrix}
     x_{t-1} \\
@@ -533,7 +570,8 @@ $$
 )
 $$
 
-By substituting the formula of variance, we have 
+By substituting the formula of variance, we have
+
 $$
 \begin{aligned}
     \Sigma_{12} &= \mathbb{E}\Big[(x_{t-1} - \sqrt{\bar{\alpha}_{t-1}}x_0)(x_t-\sqrt{\bar{\alpha}_t}x_0)^T \Big] \\
@@ -544,10 +582,11 @@ $$
     &= \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I \\
     &= \Sigma_{21}^T
 \Sigma_{21} = \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I \\
-\end{aligned} 
+\end{aligned}
 $$
 
-Substituting the result to $\mathbf{x}$, we have 
+Substituting the result to $\mathbf{x}$, we have
+
 $$
 \therefore \space
 \begin{equation}
@@ -569,7 +608,9 @@ $$
 )
 \end{equation}
 $$
+
 Therefore, we can use equation 11 to get:
+
 $$
 \begin{align}
     \bar{\mu}(x_1 \vert x_2 = \mathbf{a}) &= \mu_1 + \Sigma_{12} \Sigma^{-1}_{22}(\mathbf{a}-\mu_2) \nonumber\\
@@ -581,9 +622,10 @@ $$
     &=  \frac{(1-\bar{\alpha}_{t-1})\big(1-\bar{\alpha_t} - \alpha_t+\bar{\alpha}_{t})\big)}{(1-\bar{\alpha_t})}I\nonumber \\
     &= \frac{(1-\bar{\alpha}_{t-1})\big(1 - \alpha_t)\big)}{(1-\bar{\alpha_t})}I \nonumber \\
     \Sigma(x_{t-1}\vert x_t, x_0) &= \frac{(1-\bar{\alpha}_{t-1})\beta_t}{(1-\bar{\alpha_t})}I
-\end{align}$$
+\end{align}
+$$
 
-Remark: 
+Remark:
 
 $$
 \begin{gathered}
@@ -593,7 +635,8 @@ $$
 \end{gathered}
 $$
 
-Finally, we have a closed form for reveresed process: 
+Finally, we have a closed form for reveresed process:
+
 $$
 \begin{align}
     p(x_{t-1}\vert x_t, x_0) &= \mathbb{N}(x_{t-1}; \mu(x_{t-1}\vert x_t, x_0), \Sigma(x_{t-1}\vert x_t, x_0)) \nonumber \\
@@ -602,4 +645,3 @@ $$
 $$
 
 ### The Method of Undetermined Coefficient
-
