@@ -416,35 +416,35 @@ Therefore, we can make a further assumption based on the derivation result.
 ### Multivariate Guassian Distribution Property (Conditional Distributions)
 By [Wiki](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), if N-dimensional $x$ is partitioned as follows
 $$
-x = \begin{bmatrix*}
+x = \begin{bmatrix}
     x_1 \\
     x_2
-\end{bmatrix*} \text{ with sizes }
-\begin{bmatrix*}
+\end{bmatrix} \text{ with sizes }
+\begin{bmatrix}
     q \times 1 \\
     (N - q) \times 1
-\end{bmatrix*}
+\end{bmatrix}
 $$
 and accordingly $\mu$ and $\Sigma$ are partitioned as follows
 $$
 \begin{aligned}
-    \mu &= \begin{bmatrix*}
+    \mu &= \begin{bmatrix}
     \mu_1 \\
     \mu_2
-\end{bmatrix*} \text{ with sizes }
-\begin{bmatrix*}
+\end{bmatrix} \text{ with sizes }
+\begin{bmatrix}
     q \times 1 \\
     (N - q) \times 1
-\end{bmatrix*} \\
+\end{bmatrix} \\
 \Sigma &= 
-\begin{bmatrix*}
+\begin{bmatrix}
     \Sigma_{11} & \Sigma_{12} \\
     \Sigma_{21} & \Sigma_{22}
-\end{bmatrix*} \text{ with sizes }
-\begin{bmatrix*}
+\end{bmatrix} \text{ with sizes }
+\begin{bmatrix}
     q \times q & q \times (N - q) \\
     (N - q) \times q & (N-q)\times(N-q)
-\end{bmatrix*} \\ 
+\end{bmatrix} \\ 
 &= \mathbb{E}\Big[ (\mathbf{X}-\mathbf{\mu})(\mathbf{X}-\mathbf{\mu})^T \Big] \\
 &= \mathbb{E}\Big[ 
     \begin{pmatrix}
@@ -456,10 +456,10 @@ $$
     \end{pmatrix}
  \Big] \\
 &= 
-    \begin{bmatrix*}
+    \begin{bmatrix}
         \mathbb{E}(x_1 - \mu_1)(x_1 - \mu_1)^T & \mathbb{E}(x_1 - \mu_1)(x_2 - \mu_2)^T \\
         \mathbb{E}(x_2 - \mu_2)(x_1 - \mu_1)^T & \mathbb{E}(x_2 - \mu_2)(x_2 - \mu_2)^T
-    \end{bmatrix*}
+    \end{bmatrix}
 
 \end{aligned} 
 $$
@@ -497,21 +497,21 @@ Therefore, we have
 
 Therefore, we form a matrix s.t. (concat two gaussian function still follows gaussian distribution; **proof required**)
 $$
-\mathbf{x} = \begin{bmatrix*}
+\mathbf{x} = \begin{bmatrix}
     x_{t-1} \\
     x_t
-\end{bmatrix*} 
+\end{bmatrix} 
 \sim
 \mathbb{N}(
-    \begin{bmatrix*}
+    \begin{bmatrix}
     \sqrt{\bar{\alpha}_{t-1}} x_{0} \\
     \sqrt{\bar{\alpha_t}} x_{0} 
-    \end{bmatrix*}
+    \end{bmatrix}
     ,
-    \begin{bmatrix*}
+    \begin{bmatrix}
         (1-\bar{\alpha}_{t-1})I & \Sigma_{12} \\
         \Sigma_{21} & (1-\bar{\alpha_t})I
-    \end{bmatrix*}
+    \end{bmatrix}
 )
 $$
 
@@ -533,21 +533,21 @@ Substituting the result to $\mathbf{x}$, we have
 $$
 \therefore \space
 \begin{equation}
-    \mathbf{x} = \begin{bmatrix*}
+    \mathbf{x} = \begin{bmatrix}
     x_{t-1} \\
     x_t
-\end{bmatrix*} 
+\end{bmatrix} 
 \sim
 \mathbb{N}(
-    \begin{bmatrix*}
+    \begin{bmatrix}
     \sqrt{\bar{\alpha}_{t-1}} x_{0} \\
     \sqrt{\bar{\alpha_t}} x_{0} 
-    \end{bmatrix*}
+    \end{bmatrix}
     ,
-    \begin{bmatrix*}
+    \begin{bmatrix}
         (1-\bar{\alpha}_{t-1})I & \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I \\
         \sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})I & (1-\bar{\alpha_t})I
-    \end{bmatrix*}
+    \end{bmatrix}
 )
 \end{equation}
 $$
