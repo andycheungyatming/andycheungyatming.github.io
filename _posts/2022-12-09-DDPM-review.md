@@ -414,7 +414,9 @@ Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arx
 
 Therefore, we can make a further assumption based on the derivation result.
 > Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
-> $$p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)$$
+> $$
+p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)
+>$$
 
 
 ### Multivariate Guassian Distribution Property (Conditional Distributions)
