@@ -113,7 +113,7 @@ $$x_\tau=z$$
 $$x_0$$
  directly.
 
-## Speed up from Non-Markov Reversed Pass
+## Speed up from Non-Markov Inference Pass
 ![圖 1](https://s2.loli.net/2022/12/21/DJa5UmE2WRFzqd4.png)  
 We can observe that we skipped 
 $$p(x_t\vert x_{t-1})$$
