@@ -197,7 +197,7 @@ $$
 \mathbb{E}_{\mathbf{x}_0, \boldsymbol{\epsilon}}\left[\frac{\beta_t^2}{2 \sigma_t^2 \alpha_t\left(1-\bar{\alpha}_t\right)}\left\|\boldsymbol{\epsilon}-\boldsymbol{\epsilon}_\theta\left(\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}, t\right)\right\|^2\right]
 $$
 
-Therefore, we can train an network by minisming the captioned loss function, and generate a random image starting bym$x_T \sim \boldsymbol{N}(0, \boldsymbol{I})$ to $x_0$ via
+Therefore, we can train an network by minisming the captioned loss function, and generate a random image starting by $x_T \sim \boldsymbol{N}(0, \boldsymbol{I})$ to $x_0$ via
 
 $$
 \boldsymbol{\mu}(\boldsymbol{x}_t) = x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\big(\boldsymbol{x}_t   - \sqrt{\beta_t} \boldsymbol{\epsilon}_{\boldsymbol{\theta}}(\boldsymbol{x}_t, t)\big)
