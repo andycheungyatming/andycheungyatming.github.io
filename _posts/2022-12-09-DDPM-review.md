@@ -43,6 +43,7 @@ Two Gaussian ,e.g. $\mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\
 
 
 > By [Wiki](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if 
+> 
 > $$ 
 > \begin{aligned}
 > X &\sim \mathbb{N}(\mu_X, \sigma^2_X) \\
@@ -50,6 +51,7 @@ Two Gaussian ,e.g. $\mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\
 > Z &= X+Y \\
 > \end{aligned} 
 > $$
+> 
 > then 
 > $$ Z \sim \mathbb{N}(\mu_X+\mu_Y, \sigma^2_X+\sigma^2_Y)$$
 
@@ -405,7 +407,7 @@ Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arx
 ### Recall for DDPM Bayes Derivation 
 > $$
 >\begin{aligned}p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)\xrightarrow{\text{approx}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t)\end{aligned}
->$$
+> $$
 > We have found that 
 >- **Loss function** is only related to $p(x_t\vert x_0)$
 >- **Sampling process** only rely on $p(x_{t-1} \vert x_t)$, where the reverse process is a markov chain
@@ -413,6 +415,8 @@ Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arx
 Therefore, we can make a further assumption based on the derivation result.
 > Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
 > $$p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)$$
+
+
 ### Multivariate Guassian Distribution Property (Conditional Distributions)
 By [Wiki](https://en.wikipedia.org/wiki/Multivariate_normal_distribution), if N-dimensional $x$ is partitioned as follows
 $$
