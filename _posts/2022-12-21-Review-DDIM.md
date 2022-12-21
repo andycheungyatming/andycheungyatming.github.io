@@ -13,7 +13,7 @@ tags:
 ---
 # Denoising Diffusion Implicit Models (DDIM)
 
-Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). The concpet of DDIM is to apply a new sampling method s.t. the denosiing process can be speed up by given a closed form for reverse process.
+Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502). The concept of DDIM is to apply a new sampling method s.t. the denoising process can be speed up by given a closed form for reverse process.
 
 ## Recall for DDPM Bayes Derivation
 
@@ -33,15 +33,9 @@ $$
 p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)
 $$
 
-## The Methods of Undertermined Coefficient
+## The Methods of Undetermined Coefficient
 
 > In short, it is just like let $ax^2+bx+c=0$ ...
-
-First of all, we let $p(x_{t-1}\vert x_t,x_0)$ as
-
-$$
-\begin{equation}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0) = \mathcal{N}(\boldsymbol{x}_{t-1}; \kappa_t \boldsymbol{x}_t + \lambda_t \boldsymbol{x}_0, \sigma_t^2 \boldsymbol{I})\end{equation}
-$$
 
 Recall that we have found
 $$
