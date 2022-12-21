@@ -61,7 +61,9 @@ p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)= \frac{p(\boldsymbol{
 \end{equation}
 $$
 
-where $p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0),p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)$ is well known or can be found.
+where 
+$$p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1}),p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0),p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)$$ 
+is well known or can be found.
 
 Therefore, we can get the following expression:
 
