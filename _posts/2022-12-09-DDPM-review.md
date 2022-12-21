@@ -412,10 +412,10 @@ Song et. al. (2022) introduced [Denoising Diffusion Implicit Models](https://arx
 >- **Sampling process** only rely on $p(x_{t-1} \vert x_t)$, where the reverse process is a markov chain
 
 Therefore, we can make a further assumption based on the derivation result.
-> Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
-> $$
+Can we skip $p(x_t\vert x_{t-1})$ during the derivation process s.t. 
+$$
 p(\boldsymbol{x}_t|\boldsymbol{x}_{t-1})\xrightarrow{\text{derive}}p(\boldsymbol{x}_t|\boldsymbol{x}_0)\xrightarrow{\text{derive}}p(\boldsymbol{x}_{t-1}|\boldsymbol{x}_t, \boldsymbol{x}_0)
->$$
+$$
 
 
 ### Multivariate Guassian Distribution Property (Conditional Distributions)
@@ -481,18 +481,19 @@ $$
 $$
 
 ### Speed up by Finding Closed Form of $p(x_{t-1}\vert x_t,x_0)$
-> In short, it is just like let $ax^2+bx+c=0$ ...
+In short, it is just like let $ax^2+bx+c=0$ ...
 
 By marginal probability, we just need
 $$
 \int p(x_{t-1}\vert x_t,x_0)p(x_t\vert x_0)d x_t = p(x_{t-1}\vert x_0)
 $$
 
-> we can recall that $p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0)}{p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)}$ in previous section, $p(x_{t}\vert x_{t-1})$ is not neccessary from marginal probability. 
+we can recall that $p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0)}{p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)}$ in previous section, $p(x_{t}\vert x_{t-1})$ is not neccessary from marginal probability. 
 
 Therefore, we have 
 
-> $$ \begin{align}
+$$ 
+\begin{align}
     x_t &:= \sqrt{\alpha_t} x_{t-1} + \sqrt{\beta_t}\boldsymbol{\epsilon}_{t-1} \\
     x_{t-1} &= \sqrt{\bar{\alpha}_{t-1}} x_{0} + \sqrt{1-\bar{\alpha}_{t-1}}\boldsymbol{\bar{\epsilon}}_{t-2} \sim \mathbb{N}\big(\sqrt{\bar{\alpha}_{t-1}} x_{0}, (\sqrt{1-\bar{\alpha}_{t-1}})^2I\big)\\
     \text{By substituting the formula } 14 \rightarrow 13, 
@@ -501,7 +502,7 @@ Therefore, we have
     &= \sqrt{\bar{\alpha_t}} x_{0} + \sqrt{1-\bar{\alpha_t}}\boldsymbol{\bar{\epsilon}_{t-1}} \space \text{;where } \boldsymbol{\bar{\epsilon}_{t-1}} \text{ is merging result of } \epsilon_1, \epsilon_2, \dots, \epsilon_{t-1} \sim \mathbb{N}(0,1) \\
     &= \mathbb{N}\big(x_t;\sqrt{\bar{\alpha}_{t}} x_{0}, (\sqrt{1-\bar{\alpha}_{t}})^2I\big) \nonumber
 \end{align}
-> $$
+$$
 
 Therefore, we form a matrix s.t. (concat two gaussian function still follows gaussian distribution; **proof required**)
 $$
@@ -573,14 +574,14 @@ $$
     \Sigma(x_{t-1}\vert x_t, x_0) &= \frac{(1-\bar{\alpha}_{t-1})\beta_t}{(1-\bar{\alpha_t})}I
 \end{align}$$
 
-> Remark: 
->$$
+Remark: 
+$$
 \begin{gathered}
     A &= aI \\
     A^{-1}A &= A^{-1}aI \\
     \frac{1}{a}I &= A^{-1}
 \end{gathered}
->$$
+$$
 
 Finally, we have a closed form for reveresed process: 
 $$
