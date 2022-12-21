@@ -123,7 +123,7 @@ Therefore, we can observe by more steps iterated, the more image will be convert
 
 The formula 
 $$\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
- is formed by a schedule. The schedle is responsilbe to how the way is to destruct an image to pure noise.
+ is formed by a schedule. The schedule is responsible to how the way is to destruct an image to pure noise.
 
 #### Linear Schedule
 
@@ -144,7 +144,7 @@ def linear_beta_schedule(timesteps):
 Later cosine schedule is proponsed. It replace the linear schedule as:
 
 - In linear schedule, the last couple of timesteps already seems like complete noise
-- and might be redundent.
+- and might be redundan.
 - Therefore, Information is destroyed too fast.
 
 Cosine schedule can solve the problem mentioned above.
@@ -164,8 +164,10 @@ Cosine schedule can solve the problem mentioned above.
 
 We know how to process the forward process. However we have no idea to recover an image from noise as we dont know the formula, or equation for it. Luckily we can use deep neural network to approximate one due to [Universal Approximation Theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem).
 
-However, it is mentioned that it is difficult to recover/ generate directly from $x_t \rightarrow x_0$ . Therefore, the intuitive idea is to find $q(x_{t-1}\vert x_t)$
-
+However, it is mentioned that it is difficult to recover/ generate directly from 
+$$x_t \rightarrow x_0$$
+ . Therefore, the intuitive idea is to find 
+$$q(x_{t-1}\vert x_t)$$
 repeatedly and remove the noise (denoise) the image piece by piece. i.e.
 
 $$
