@@ -124,6 +124,7 @@ We can observe that we skipped $p(x_t\vert x_{t-1})$. $\alpha_t$ and $\bar{\alph
 $ (which describe we want a model to predict $x_0$ from $x_t$) does not depend on the specific forward procedure as long as $p(x_t|x_0)$ is fixed, we may also consider forward processes with lengths smaller than T, which accelerates the corresponding generative processes without having to train a different model.
 
 > In DDIM view, if we have trained $x_1, x_2, \dots, x_{1000}$ to predict $x_0$, meaning we have 1000 model that train to map $x_1 \rightarrow x_0, x_2 \rightarrow x_0, \dots, x_{1000} \rightarrow x_0$.
+
 ![圖 2](https://s2.loli.net/2022/12/21/fevSMVN9utX7zrY.png)  
 
 More specifically, we let $\mathbf{\tau} = [\tau_1, \tau_2, \dots, \tau_{dim(\tau)}]$ as an arbitary subset of $[1,2,\dots,T]$ of length $S$. For a well-pretrained diffusion model, the model include the result for any arbitary subset $\mathbf{\tau}$.
