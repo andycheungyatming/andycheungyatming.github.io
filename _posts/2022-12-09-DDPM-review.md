@@ -493,7 +493,9 @@ $$
 \int p(x_{t-1}\vert x_t,x_0)p(x_t\vert x_0)d x_t = p(x_{t-1}\vert x_0)
 $$
 
-we can recall that $p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0)}{p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)}$ in previous section, $p(x_{t}\vert x_{t-1})$ is not neccessary from marginal probability. 
+we can recall that 
+$$p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_t, \boldsymbol{x}_0) = \frac{p(\boldsymbol{x}_t\vert\boldsymbol{x}_{t-1})p(\boldsymbol{x}_{t-1}\vert\boldsymbol{x}_0)}{p(\boldsymbol{x}_t\vert\boldsymbol{x}_0)}$$
+ in previous section, $p(x_{t}\vert x_{t-1})$ is not neccessary from marginal probability. 
 
 Therefore, we have 
 
