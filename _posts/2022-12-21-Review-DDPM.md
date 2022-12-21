@@ -121,7 +121,9 @@ Therefore, we can observe by more steps iterated, the more image will be convert
 
 ### Schedule
 
-The formula $\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$ is formed by a schedule. The schedle is responsilbe to how the way is to destruct an image to pure noise.
+The formula 
+$$\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
+ is formed by a schedule. The schedle is responsilbe to how the way is to destruct an image to pure noise.
 
 #### Linear Schedule
 
