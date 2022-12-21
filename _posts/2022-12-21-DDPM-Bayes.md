@@ -272,6 +272,7 @@ $$
 $$
 
 then the distribution of $x_1$ conditional on $x_2 = \mathbf{a}$ is multivariate normal $(x_1 \vert x_2 = \mathbf{a}) \sim N(\bar{\mu}, \bar{\Sigma})$, where
+
 $$
 \begin{align}
     \bar{\mu}(x_1 \vert x_2 = \mathbf{a}) &= \mu_1 + \Sigma_{12} \Sigma^{-1}_{22}(a-\mu_2) \\
