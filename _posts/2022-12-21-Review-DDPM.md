@@ -94,8 +94,8 @@ $$
 
 we define each step as
 $$\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \epsilon_t \sim \boldsymbol{N}(0, \boldsymbol{I}), \text{ where } \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0$$
- and let 
-$\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$
+and let 
+$$\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
 , we have
 
 $$
