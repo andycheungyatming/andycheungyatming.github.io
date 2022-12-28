@@ -38,3 +38,31 @@ Each type of conditioning information is paired with a domain-specific encoder $
 # Conditioned Generation
 While training generative models on images with conditioning information such as ImageNet dataset, it is common to generate samples conditioned on class labels or a piece of descriptive text.
 
+
+## Classifier Guided Diffusion 
+To explicit incorporate class information into the diffusion process, Dhariwal & Nichol (2021) trained a classifier 
+$$p_\phi(y\vert x_t,t)$$
+on noisy image $x_t$ and use gradients 
+$$\nabla_x log p_\phi (y\vert x_t)$$
+to guide the diffusion sampling process toward the conditioning information $y$
+e.g. a target class label) by altering the noise prediction.
+
+Recall
+
+$$
+\mu(x_t,t) = \frac{1}{\sqrt{\alpha_t}} \Big( x_t - \frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}}\epsilon_\theta(x_t,t) \Big)
+$$
+
+Authors indicate that the following equation can be used to replace $\epsilon_\theta(x_t,t)$ to provide conditioning.
+
+$$
+\tilde{\epsilon}(x_t) := \epsilon_\theta(x_t) - \sqrt{1-\bar{\alpha}_t} \nabla_{x_t} log p_\phi (y\vert x_t)
+$$
+Lastly, one extra hyper-parameter **gradient scale** is introduced to form the samplng equation.
+![圖 2](https://s2.loli.net/2022/12/28/zO6QtxBvU1LJSbi.png)  
+
+Result is improved due to guided classifer 
+![圖 1](https://s2.loli.net/2022/12/28/2TFX9ci7qL3lvon.png)  
+
+## Classifier-Free Guidence
+Without an independent classifier $p_\phi$, it is still possible to run conditional diffusion steps by incorporating the scores from a conditional and an unconditional diffusion model
