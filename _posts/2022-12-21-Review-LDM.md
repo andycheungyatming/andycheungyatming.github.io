@@ -46,17 +46,13 @@ While training generative models on images with conditioning information such as
 ## Classifier Guided Diffusion
 
 To explicit incorporate class information into the diffusion process, [Dhariwal & Nichol (2021)](https://arxiv.org/abs/2105.05233) trained a classifier
-
 $$
 f_\phi(y\vert x_t,t)
 $$
-
 on noisy image $x_t$ and use gradients
-
 $$
 \nabla_x log f_\phi (y\vert x_t)
 $$
-
 to guide the diffusion sampling process toward the conditioning information $y$
 e.g. a target class label) by altering the noise prediction.
 
