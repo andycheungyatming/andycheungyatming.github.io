@@ -119,6 +119,7 @@ $$
 $$
 
 In short,
+
 $$
 \nabla_{\mathbf{x}_t} \log q(\mathbf{x}_t) = - \frac{1}{\sqrt{1 - \bar{\alpha}_t}} \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)
 $$
