@@ -54,7 +54,7 @@ $$
 \nabla_x log f_\phi (y\vert x_t)
 $$
 to guide the diffusion sampling process toward the conditioning information $y$
-e.g. a target class label) by altering the noise prediction.
+(e.g. a target class label) by altering the noise prediction.
 
 Recall
 
@@ -105,6 +105,7 @@ Given $\mathbf{x} \sim \mathcal{N}(\mathbf{\mu}, \sigma^2 \mathbf{I})$, we can w
 $$
 \nabla_{\mathbf{x}}\log p(\mathbf{x}) = \nabla_{\mathbf{x}} \Big(-\frac{1}{2\sigma^2}(\mathbf{x} - \boldsymbol{\mu})^2 \Big) = - \frac{\mathbf{x} - \boldsymbol{\mu}}{\sigma^2} = - \frac{\boldsymbol{\epsilon}}{\sigma}, \text{ where } \boldsymbol{\epsilon} \sim \mathcal{N}(\boldsymbol{0}, \mathbf{I})  
 $$
+
 Recall $q(\mathbf{x}_t \vert \mathbf{x}_0) \sim \mathcal{N}(\sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I})$
 
 Therefore,
