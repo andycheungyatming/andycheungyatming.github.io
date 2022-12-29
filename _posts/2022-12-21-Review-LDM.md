@@ -73,17 +73,13 @@ $$
 #### Langevin dynamics
 
 Langevin dynamics is a concept from physics, developed for statistically modeling molecular systems. Combined with stochastic gradient descent, stochastic gradient Langevin dynamics ([Welling &amp; Teh 2011](https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.226.363)) can produce samples from a probability density
-
 $$
 p(\mathbf{x})
 $$
-
 using only the gradients
-
 $$
 \nabla_\mathbf{x} \log p(\mathbf{x})
 $$
-
 in a Markov chain of updates:
 
 $$
@@ -94,11 +90,9 @@ $$
 
 where $\delta$ is the step size.
 When $T \rightarrow\infty, \epsilon \rightarrow 0, \mathbf{x}_T$ equals to the true probability density
-
 $$
 p(\mathbf{x})
 $$
-
 .
 
 [Song &amp; Ermon, 2019](https://arxiv.org/abs/1907.05600) proposed a score-based generative modeling method where samples are produced via Langevin dynamics using gradients of the data distribution estimated with score matching. The score of each sample's density probability is defined as its gradient
