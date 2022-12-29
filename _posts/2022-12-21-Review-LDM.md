@@ -72,7 +72,7 @@ $$
 
 #### Langevin dynamics
 
-Langevin dynamics is a concept from physics, developed for statistically modeling molecular systems. Combined with stochastic gradient descent, stochastic gradient Langevin dynamics ([Welling &amp; Teh 2011](https://www.stats.ox.ac.uk/~teh/research/compstats/WelTeh2011a.pdf)) can produce samples from a probability density
+Langevin dynamics is a concept from physics, developed for statistically modeling molecular systems. Combined with stochastic gradient descent, stochastic gradient Langevin dynamics ([Welling &amp; Teh, 2011](https://www.stats.ox.ac.uk/~teh/research/compstats/WelTeh2011a.pdf)) can produce samples from a probability density
 $$
 p(\mathbf{x})
 $$
@@ -136,7 +136,7 @@ $$
 $$
 
 Lastly, one extra hyper-parameter **gradient scale** is introduced to form the samplng equation.
-![圖 2](https://s2.loli.net/2022/12/28/zO6QtxBvU1LJSbi.png)
+![圖 3](https://s2.loli.net/2022/12/29/d574kOsuCbGN9XM.png)  
 
 Result is improved due to guided classifer
 ![圖 1](https://s2.loli.net/2022/12/28/2TFX9ci7qL3lvon.png)
