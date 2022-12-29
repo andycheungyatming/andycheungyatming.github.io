@@ -45,14 +45,18 @@ While training generative models on images with conditioning information such as
 
 ## Classifier Guided Diffusion
 
-To explicit incorporate class information into the diffusion process, [Dhariwal & Nichol (2021)](https://arxiv.org/abs/2105.05233) trained a classifier
+To explicit incorporate class information into the diffusion process, [Dhariwal &amp; Nichol (2021)](https://arxiv.org/abs/2105.05233) trained a classifier
+
 $$
 f_\phi(y\vert x_t,t)
 $$
+
 on noisy image $x_t$ and use gradients
+
 $$
 \nabla_x log f_\phi (y\vert x_t)
 $$
+
 to guide the diffusion sampling process toward the conditioning information $y$
 (e.g. a target class label) by altering the noise prediction.
 
@@ -73,13 +77,17 @@ $$
 #### Langevin dynamics
 
 Langevin dynamics is a concept from physics, developed for statistically modeling molecular systems. Combined with stochastic gradient descent, stochastic gradient Langevin dynamics ([Welling &amp; Teh, 2011](https://www.stats.ox.ac.uk/~teh/research/compstats/WelTeh2011a.pdf)) can produce samples from a probability density
+
 $$
 p(\mathbf{x})
 $$
+
 using only the gradients
+
 $$
 \nabla_\mathbf{x} \log p(\mathbf{x})
 $$
+
 in a Markov chain of updates:
 
 $$
@@ -90,20 +98,29 @@ $$
 
 where $\delta$ is the step size.
 When $T \rightarrow\infty, \epsilon \rightarrow 0, \mathbf{x}_T$ equals to the true probability density
+
 $$
 p(\mathbf{x})
 $$
+
 .
 
 [Song &amp; Ermon, 2019](https://arxiv.org/abs/1907.05600) proposed a score-based generative modeling method where samples are produced via Langevin dynamics using gradients of the data distribution estimated with score matching. The score of each sample's density probability is defined as its gradient
-$$\nabla_{\mathbf{x}} \log q(\mathbf{x})$$
+
+$$
+\nabla_{\mathbf{x}} \log q(\mathbf{x})
+$$
+
 A score network $s_\theta$ is trained to estimate it, s.t.
-$$\mathbf{s}_\theta(\mathbf{x}) \approx \nabla_{\mathbf{x}} \log q(\mathbf{x})$$
+
+$$
+\mathbf{s}_\theta(\mathbf{x}) \approx \nabla_{\mathbf{x}} \log q(\mathbf{x})
+$$
 
 Given $\mathbf{x} \sim \mathcal{N}(\mathbf{\mu}, \sigma^2 \mathbf{I})$, we can write the derivative of the logarithm of its density function as
 
 $$
-\nabla_{\mathbf{x}}\log p(\mathbf{x}) = \nabla_{\mathbf{x}} \Big(-\frac{1}{2\sigma^2}(\mathbf{x} - \boldsymbol{\mu})^2 \Big) = - \frac{\mathbf{x} - \boldsymbol{\mu}}{\sigma^2} = - \frac{\boldsymbol{\epsilon}}{\sigma}, \text{ where } \boldsymbol{\epsilon} \sim \mathcal{N}(\boldsymbol{0}, \mathbf{I})  
+\nabla_{\mathbf{x}}\log p(\mathbf{x}) = \nabla_{\mathbf{x}} \Big(-\frac{1}{2\sigma^2}(\mathbf{x} - \boldsymbol{\mu})^2 \Big) = - \frac{\mathbf{x} - \boldsymbol{\mu}}{\sigma^2} = - \frac{\boldsymbol{\epsilon}}{\sigma}, \text{ where } \boldsymbol{\epsilon} \sim \mathcal{N}(\boldsymbol{0}, \mathbf{I})
 $$
 
 Recall $q(\mathbf{x}_t \vert \mathbf{x}_0) \sim \mathcal{N}(\sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I})$
@@ -136,41 +153,55 @@ $$
 $$
 
 Lastly, one extra hyper-parameter **gradient scale** is introduced to form the samplng equation.
-![圖 3](https://s2.loli.net/2022/12/29/d574kOsuCbGN9XM.png)  
+![圖 3](https://s2.loli.net/2022/12/29/d574kOsuCbGN9XM.png)
 
 Result is improved due to guided classifer
 ![圖 1](https://s2.loli.net/2022/12/28/2TFX9ci7qL3lvon.png)
 
 ## Classifier-Free Guidance
 
-Without an independent classifier $p_\phi$, it is still possible to run conditional diffusion steps by incorporating the scores from a conditional and an unconditional diffusion model ([Ho &amp; Salimans, 2021](https://openreview.net/forum?id=qw8AKxfYbI)). Let unconditional denoising diffusion model
+Without an independent classifier $f_\phi$, it is still possible to run conditional diffusion steps by incorporating the scores from a conditional and an unconditional diffusion model ([Ho &amp; Salimans, 2021](https://openreview.net/forum?id=qw8AKxfYbI)). Let unconditional denoising diffusion model
+
 $$
 p_\theta(\mathbf{x})
 $$
+
 parameterized through a score estimator
+
 $$
 \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)
 $$
+
 and the conditional model
+
 $$
 p_\theta (x\vert y)
 $$
+
 parameterized through
+
 $$
 \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, y)
 $$
+
 .  These two models can be learned via a single neural network. Precisely, a conditional diffusion model
+
 $$
 p_\theta(\mathbf{x} \vert y)
 $$
+
 is trained on paired data
+
 $$
 (x,y)
 $$
+
 , where the conditioning information $y$ gets discarded periodically at random such that the model knows how to generate images unconditionally as well, i.e.
+
 $$
 \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t) = \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, y=\varnothing)
 $$
+
 .
 
 The gradient of an implicit classifier can be represented with conditional and unconditional score estimators. Once plugged into the classifier-guided modified score, the score contains **no dependency on a separate classifier**.
@@ -188,8 +219,15 @@ $$
 $$
 
 In short, we can add an additional condition to model s.t. $\epsilon_\theta(x_t) \rightarrow \epsilon_\theta(x_t,y)$. This method can combine both condition and unconditional cases st.
-$$\epsilon_\theta(x_t,y) \And \epsilon_\theta(x_t,y=Null)$$
+
+$$
+\epsilon_\theta(x_t,y) \And \epsilon_\theta(x_t,y=Null)
+$$
+
 . In reserve process, we can use
 
-$$\tilde{\epsilon}_\theta(x_t \vert y) = \epsilon_\theta (x_t) + s\cdot(\epsilon_\theta(x_t,y) - \epsilon_\theta(x_t))$$
-, where s is a strengh hyperparameter. 
+$$
+\tilde{\epsilon}_\theta(x_t \vert y) = \epsilon_\theta (x_t) + s\cdot(\epsilon_\theta(x_t,y) - \epsilon_\theta(x_t))
+$$
+
+, where s is a strengh hyperparameter.
