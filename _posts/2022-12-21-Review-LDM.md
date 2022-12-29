@@ -58,6 +58,7 @@ Authors indicate that the following equation can be used to replace $\epsilon_\t
 $$
 \tilde{\epsilon}(x_t) := \epsilon_\theta(x_t) - \sqrt{1-\bar{\alpha}_t} \nabla_{x_t} log p_\phi (y\vert x_t)
 $$
+
 Lastly, one extra hyper-parameter **gradient scale** is introduced to form the samplng equation.
 ![圖 2](https://s2.loli.net/2022/12/28/zO6QtxBvU1LJSbi.png)  
 
@@ -65,4 +66,19 @@ Result is improved due to guided classifer
 ![圖 1](https://s2.loli.net/2022/12/28/2TFX9ci7qL3lvon.png)  
 
 ## Classifier-Free Guidence
-Without an independent classifier $p_\phi$, it is still possible to run conditional diffusion steps by incorporating the scores from a conditional and an unconditional diffusion model
+Without an independent classifier $p_\phi$, it is still possible to run conditional diffusion steps by incorporating the scores from a conditional and an unconditional diffusion model ([Ho & Salimans, 2021](https://openreview.net/forum?id=qw8AKxfYbI)). Let unconditional denoising diffusion model 
+$$p_\theta(x)$$
+parameterized through a score estimator 
+$$\boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)$$
+and the conditional model 
+$$p_\theta (x\vert y)$$
+parameterized through 
+$$\boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, y)$$
+.  These two models can be learned via a single neural network. Precisely, a conditional diffusion model 
+$$p_\theta(\mathbf{x} \vert y)$$
+ is trained on paired data
+$$(x,y)$$
+, where the conditioning information $y$ gets discarded periodically at random such that the model knows how to generate images unconditionally as well, i.e.
+$$ \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t) = \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, y=\varnothing) $$
+.
+
