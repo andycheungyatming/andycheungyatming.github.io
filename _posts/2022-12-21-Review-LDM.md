@@ -141,7 +141,7 @@ Lastly, one extra hyper-parameter **gradient scale** is introduced to form the s
 Result is improved due to guided classifer
 ![圖 1](https://s2.loli.net/2022/12/28/2TFX9ci7qL3lvon.png)
 
-## Classifier-Free Guidence
+## Classifier-Free Guidance
 
 Without an independent classifier $p_\phi$, it is still possible to run conditional diffusion steps by incorporating the scores from a conditional and an unconditional diffusion model ([Ho &amp; Salimans, 2021](https://openreview.net/forum?id=qw8AKxfYbI)). Let unconditional denoising diffusion model
 $$
