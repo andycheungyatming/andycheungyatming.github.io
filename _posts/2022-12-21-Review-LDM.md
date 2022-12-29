@@ -208,3 +208,10 @@ $$
 &= (w+1) \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, y) - w \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)
 \end{aligned}
 $$
+
+In short, we can add an additional condition to model s.t. $\epsilon_\theta(x_t) \rightarrow \epsilon_\theta(x_t,y)$. This method can combine both condition and unconditional cases st.
+$$\epsilon_\theta(x_t,y) \And \epsilon_\theta(x_t,y=Null)$$
+. In reserve process, we can use
+
+$$\tilde{\epsilon}_\theta(x_t \vert y) = \epsilon_\theta (x_t) + s\cdot(\epsilon_\theta(x_t,y) - \epsilon_\theta(x_t))$$
+, where s is a strengh hyperparameter. 
