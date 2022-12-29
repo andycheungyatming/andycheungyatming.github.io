@@ -67,7 +67,7 @@ Result is improved due to guided classifer
 
 ## Classifier-Free Guidence
 Without an independent classifier $p_\phi$, it is still possible to run conditional diffusion steps by incorporating the scores from a conditional and an unconditional diffusion model ([Ho & Salimans, 2021](https://openreview.net/forum?id=qw8AKxfYbI)). Let unconditional denoising diffusion model 
-$$p_\theta(x)$$
+$$p_\theta(\mathbf{x})$$
 parameterized through a score estimator 
 $$\boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)$$
 and the conditional model 
@@ -79,6 +79,8 @@ $$p_\theta(\mathbf{x} \vert y)$$
  is trained on paired data
 $$(x,y)$$
 , where the conditioning information $y$ gets discarded periodically at random such that the model knows how to generate images unconditionally as well, i.e.
+
 $$ \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t) = \boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t, y=\varnothing) $$
 .
+
 
