@@ -45,7 +45,7 @@ While training generative models on images with conditioning information such as
 
 ## Classifier Guided Diffusion
 
-To explicit incorporate class information into the diffusion process, Dhariwal & Nichol (2021) trained a classifier
+To explicit incorporate class information into the diffusion process, [Dhariwal & Nichol (2021)](https://arxiv.org/abs/2105.05233) trained a classifier
 
 $$
 f_\phi(y\vert x_t,t)
