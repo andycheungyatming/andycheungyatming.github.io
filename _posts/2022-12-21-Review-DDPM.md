@@ -41,19 +41,21 @@ I'd like to use destruction instead of forward process. Basically we want to mak
 
 Two Gaussian ,e.g. $\mathbb{N}(0,\sigma^2_1 \boldsymbol{I}) \And  \mathbb{N}(0,\sigma^2_2 \boldsymbol{I})$ with different variance can be merged to $\mathbb{N}(0,(\sigma^2_1+\sigma^2_2) \boldsymbol{I})$
 
-
-> By [Wiki](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if 
-> 
-> $$ 
+> By [Wiki](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), Let $X$ and $Y$ be independent random variables that are normally distributed (and therefore also jointly so), then their sum is also noramlly distributed, i.e., if
+>
+> $$
 > \begin{aligned}
 > X &\sim \mathbb{N}(\mu_X, \sigma^2_X) \\
 > X &\sim \mathbb{N}(\mu_Y, \sigma^2_Y) \\
 > Z &= X+Y \\
-> \end{aligned} 
+> \end{aligned}
 > $$
-> 
-> then 
-> $$ Z \sim \mathbb{N}(\mu_X+\mu_Y, \sigma^2_X+\sigma^2_Y)$$
+>
+> then
+>
+> $$
+> Z \sim \mathbb{N}(\mu_X+\mu_Y, \sigma^2_X+\sigma^2_Y)
+> $$
 
 #### Proof
 
@@ -72,6 +74,7 @@ $$
 As $X_i \sim \mathbb{N}(\mu_i, \Sigma_i), i=1 \cdots N,$, we have claim they are i.i.d. Hence the covariances are zero. i.e. $\textbf{Cov}(X_i,X_j)=0$
 
 A newly aggregated these Gaussian distributions is defined as a weighted sum:
+
 $$
 X=\sum_{i=1}^{N} a_i X_i=\sum_{i=1}^{N} \frac{n_i}{\sum_{l=1}^{N}n_l} X_i, \\ 
 \text{where} \sum_{i=1}^N a_i = 1
@@ -93,9 +96,17 @@ $$
 ### Details on destruction process
 
 we define each step as
-$$\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \epsilon_t \sim \boldsymbol{N}(0, \boldsymbol{I}), \text{ where } \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0$$
-and let 
-$$\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
+
+$$
+\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \epsilon_t \sim \boldsymbol{N}(0, \boldsymbol{I}), \text{ where } \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0
+$$
+
+and let
+
+$$
+\bar{\alpha}_t = \prod^t_{i=1}\alpha_i
+$$
+
 , we have
 
 $$
@@ -118,11 +129,14 @@ where $\boldsymbol{\bar{\epsilon}}$ is a sum of i.i.d gaussian noise
 
 Therefore, we can observe by more steps iterated, the more image will be converted to pure noise.
 
-
 ### Schedule
 
-The formula 
-$$\bar{\alpha}_t = \prod^t_{i=1}\alpha_i$$
+The formula
+
+$$
+\bar{\alpha}_t = \prod^t_{i=1}\alpha_i
+$$
+
  is formed by a schedule. The schedule is responsible to how the way is to destruct an image to pure noise.
 
 #### Linear Schedule
@@ -164,10 +178,18 @@ Cosine schedule can solve the problem mentioned above.
 
 We know how to process the forward process. However we have no idea to recover an image from noise as we dont know the formula, or equation for it. Luckily we can use deep neural network to approximate one due to [Universal Approximation Theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem).
 
-However, it is mentioned that it is difficult to recover/ generate directly from 
-$$x_t \rightarrow x_0$$
- . Therefore, the intuitive idea is to find 
-$$q(x_{t-1}\vert x_t)$$
+However, it is mentioned that it is difficult to recover/ generate directly from
+
+$$
+x_t \rightarrow x_0
+$$
+
+ . Therefore, the intuitive idea is to find
+
+$$
+q(x_{t-1}\vert x_t)
+$$
+
 repeatedly and remove the noise (denoise) the image piece by piece. i.e.
 
 $$
@@ -208,4 +230,21 @@ which is simply an expression of
 $$
 x_{t-1} \approx x_t - noise, \text{where } noise \sim \boldsymbol{N}(0,I)
 $$
+
 in each step.
+
+## Summary 
+The training algorithm is 
+![圖 1](https://s2.loli.net/2023/01/05/vKIWr9NkAOQ7y4a.png)  
+
+In other words:
+
+1. we take a random sample $\mathbf{x}_0$ from the real unknown and possibily complex data distribution $q(\mathbf{x}_0)$
+​
+2. we sample a noise level $t$ uniformally between $1$ and $T$ (i.e., a random time step)
+
+3. we sample some noise from a Gaussian distribution and corrupt the input by this noise at level $t$ (using the nice property defined above)
+
+4. the neural network is trained to predict this noise based on the corrupted image $\mathbf{x}_t$ (i.e. noise applied on $\mathbf{x}_0$ based on known schedule $\beta_t$)
+
+In reality, all of this is done on batches of data, as one uses stochastic gradient descent to optimize neural networks.
