@@ -1,6 +1,6 @@
 ---
 layout:       post
-title:        "Review: Denoising Diffusion Probabilistic Models (DDPM)"
+title:        "Note: Brainstorming and Current Progress"
 author:       "Allan"
 header-style: text
 catalog:      true
@@ -9,6 +9,7 @@ publish:      false
 tags:
     - AI
     - Brainstorming
+    - Note
 ---
 ### Remark
 
