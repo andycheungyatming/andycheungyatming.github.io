@@ -11,9 +11,6 @@ tags:
     - Brainstorming
     - Note
 ---
-### Remark
-
-
 # About Enlightening
 - [] See if the process of short exposure image is apporxiable by adding gaussian noise
 

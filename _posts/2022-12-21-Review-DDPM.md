@@ -98,7 +98,7 @@ $$
 we define each step as
 
 $$
-\boldsymbol{x}_t = \sqrt{\alpha_t}x_{t-1} + \sqrt{\beta_t}\epsilon_t , \epsilon_t \sim \boldsymbol{N}(0, \boldsymbol{I}), \text{ where } \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0
+\boldsymbol{x}_t = \sqrt{\alpha_t}\boldsymbol{x}_{t-1} + \sqrt{\beta_t}\epsilon_t , \epsilon_t \sim \boldsymbol{N}(0, \boldsymbol{I}), \text{ where } \alpha_t + \beta_t = 1 \text{ and } \beta \approx 0
 $$
 
 and let
