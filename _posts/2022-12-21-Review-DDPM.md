@@ -113,12 +113,10 @@ $$
 \begin{aligned}
 \mathbf{x}_t 
 &= \sqrt{\alpha_t}\mathbf{x}_{t-1} + \sqrt{1 - \alpha_t}\boldsymbol{\epsilon}_{t-1} \space \text{ ;where } \boldsymbol{\epsilon}_{t-1}, \boldsymbol{\epsilon}_{t-2}, \dots \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\
-&= \sqrt{\alpha_t}(\sqrt{\alpha_{t-1}}\mathbf{x_{t-2}} + \sqrt{1-\alpha_{t-1}}\boldsymbol{\epsilon}_{t-2}) + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
-&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}} + \sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}}\\
-&= \sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{(\sqrt{\alpha_t(1 - \alpha_{t-1})}\boldsymbol{\epsilon_{t-2}})^2 + (\sqrt{1-\alpha_t}\boldsymbol{\epsilon_{t-1}})^2}\\
-&=\sqrt{\alpha_t\alpha_{t-1}}\boldsymbol{x}_{t-2} + \sqrt{\cancel{\alpha_t} - \alpha_t\alpha_{t-1}+1 - \cancel{\alpha_t} }\bar{\boldsymbol{\epsilon}}_{t-2} \space \text{ ;where } \bar{\boldsymbol{\epsilon}}_{t-2} \text{ merges two Gaussians (*).}\\
-&= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_t \alpha_{t-1}} \bar{\boldsymbol{\epsilon}}_{t-2}  \\
-&= \dots \\
+
+\frac{\mathbf{x}_t}{\sqrt{\alpha_1\dots\alpha_t}} - \frac{\mathbf{x}_{t-1}}{\sqrt{\alpha_1\dots\alpha_t}} &= \frac{\sqrt{1-\alpha_t} \boldsymbol{\epsilon}_{t-1}}{\sqrt{\alpha_1\dots\alpha_t}} \\
+\frac{\mathbf{x}_T}{\sqrt{\alpha_1\dots\alpha_T}} - \mathbf{x}_0 &= \sum^T_{t=1} \frac{\sqrt{1-\alpha_t} \boldsymbol{\epsilon}_{t-1}}{\sqrt{\alpha_1\dots\alpha_t}} \\
+\mathbf{x}_T &= \sqrt{\alpha_1\dots\alpha_T}\mathbf{x}_0 + \sqrt{\alpha_{t+1}\dots\alpha_T}\sqrt{1-\alpha_t}\boldsymbol{\epsilon}_{t-1}\\
 &= \sqrt{(a_t\dots a_1)} \mathbf{x}_0 + \sqrt{1 - (a_t\dots a_1)}\boldsymbol{\bar{\epsilon}}\\
 &= \sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\bar{\epsilon}} \\
 q(\mathbf{x}_t \vert \mathbf{x}_0) &= \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t)\mathbf{I})

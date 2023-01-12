@@ -405,3 +405,5 @@ class Unet(nn.Module):
         return self.final_conv(x)
 
 ```
+
+# Defining the forward diffusion process
