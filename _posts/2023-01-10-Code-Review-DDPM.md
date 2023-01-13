@@ -407,3 +407,90 @@ class Unet(nn.Module):
 ```
 
 # Defining the forward diffusion process
+## Schedules
+The forward diffusion process gradually adds noise to an image from the real distribution, in a number of time steps $T$. This happens according to a variance schedule. The original DDPM authors employed a **linear schedule**:
+
+> We set the forward process variances to constants increasing linearly from $\beta_1 = 10^{-4} \text{ to } \beta_T = 0.02$
+
+Below, we define various schedules for the $T$ timesteps (we'll choose one later on).
+
+```python
+def cosine_beta_schedule(timesteps, s=0.008):
+    """
+    cosine schedule as proposed in https://arxiv.org/abs/2102.09672
+    """
+    steps = timesteps + 1
+    x = torch.linspace(0, timesteps, steps)
+    alphas_cumprod = torch.cos(((x / timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
+    alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
+    betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
+    return torch.clip(betas, 0.0001, 0.9999)
+
+def linear_beta_schedule(timesteps):
+    beta_start = 0.0001
+    beta_end = 0.02
+    return torch.linspace(beta_start, beta_end, timesteps)
+
+def quadratic_beta_schedule(timesteps):
+    beta_start = 0.0001
+    beta_end = 0.02
+    return torch.linspace(beta_start**0.5, beta_end**0.5, timesteps) ** 2
+
+def sigmoid_beta_schedule(timesteps):
+    beta_start = 0.0001
+    beta_end = 0.02
+    betas = torch.linspace(-6, 6, timesteps)
+    return torch.sigmoid(betas) * (beta_end - beta_start) + beta_start
+```
+
+![圖 1](https://s2.loli.net/2023/01/12/q8yHSb6cZrAhEm9.png)  
+![圖 2](https://s2.loli.net/2023/01/12/v9T6qcgL4sfBuhx.png)  
+
+To start with, let's use the linear schedule for $T=300$ time steps and define the various variables from the $\beta_t$ which we will need, such as the cumulative product of the variances $\bar{\alpha}_t$. Each of the variables below are just 1-dimensional tensors, storing values from $t$ to $T$. Importantly, we also define an extract function, which will allow us to extract the appropriate tt index for a batch of indices.
+
+```python
+timesteps = 300
+
+# define beta schedule
+betas = linear_beta_schedule(timesteps=timesteps)
+
+# define alphas 
+alphas = 1. - betas
+alphas_cumprod = torch.cumprod(alphas, axis=0)
+alphas_cumprod_prev = F.pad(alphas_cumprod[:-1], (1, 0), value=1.0)
+sqrt_recip_alphas = torch.sqrt(1.0 / alphas)
+
+# calculations for diffusion q(x_t | x_{t-1}) and others
+sqrt_alphas_cumprod = torch.sqrt(alphas_cumprod)
+sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - alphas_cumprod)
+
+# calculations for posterior q(x_{t-1} | x_t, x_0)
+posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)
+
+def extract(a, t, x_shape):
+    batch_size = t.shape[0]
+    out = a.gather(-1, t.cpu())
+    return out.reshape(batch_size, *((1,) * (len(x_shape) - 1))).to(t.device)
+```
+
+### alphas_cumprod, alpha_cumprod_prev, sqrt_recip_alphas and posterior_variance
+
+By Pytorch we have a good function to calculate the cumulative product of elements, 
+
+Therefore we can calculate $\bar{\alpha_t}$ as:
+```python
+betas = linear_beta_schedule(timesteps=10)
+alphas = 1. - betas
+alphas_cumprod = torch.cumprod(alphas, axis=0)
+> tensor([0.9999, 0.9976, 0.9931, 0.9864, 0.9776, 0.9667, 0.9537, 0.9389, 0.9222,
+        0.9037])
+```
+
+To fix at $\alpha_0 = 1$ s.t. $x_0 = \alpha_0 x_0 + \beta_0\epsilon_0$, we need: 
+```python
+alphas_cumprod_prev = F.pad(alphas_cumprod[:-1], (1, 0), value=1.0)
+> tensor([1.0000, 0.9999, 0.9976, 0.9931, 0.9864, 0.9776, 0.9667, 0.9537, 0.9389,
+        0.9222])
+```
+
+
