@@ -1,10 +1,10 @@
 # Site settings
-title: Allan Blog
-SEOTitle: Allan Blog
+title: Andy Blog
+SEOTitle: Andy Blog
 header-img: img/home-bg.jpg
-email: allanchan339@gmail.com
-description: "This is a learning blog for AI"
-keyword: "Allan, allanchan339, Pytorch, AI, Image and video processing"
+email: andycheungyatming@gmail.com
+description: "This is a learning blog for optimization"
+keyword: "Andy, Optimization"
 #url: "https://huangxuan.me" # your host, for absolute URL
 baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 
@@ -15,7 +15,7 @@ future: true
 RSS: false
 # weibo_username: huxpro
 # zhihu_username: huxpro
-github_username: allanchan339
+github_username: andycheungyatming
 # twitter_username: huxpro
 #facebook_username:  huxpro
 #linkedin_username:  firstname-lastname-idxxxx
@@ -59,7 +59,7 @@ kramdown:
       start_line: 1
 
 # Disqus settings
-disqus_username: allanchan339
+disqus_username: andycheungyatming
 
 # Netease settings
 netease_comment: false
@@ -75,7 +75,7 @@ netease_comment: false
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
 sidebar-about-description: "Nobody"
-sidebar-avatar: https://media-exp1.licdn.com/dms/image/C5603AQGD3MVwx5qPnQ/profile-displayphoto-shrink_400_400/0/1616995860079?e=1675900800&v=beta&t=vPgHfQVuTN7szDIYb9-lnlzToBxvXnvd068QUS8j4yc # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar:  # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
 featured-tags: true # whether or not using Feature-Tags

@@ -15,6 +15,7 @@ tags:
 
 Denoising Diffusion Probabilistic Models (DDPM) is introduced in [(Ho et al., 2020)](https://arxiv.org/abs/2006.11239). The maths background is discussed [(Sohl-Dickstein et al., 2015)](https://arxiv.org/abs/1503.03585). The essential idea is to systematically and slowly destroy structure in a data distribution through an iterative forward diffusion process which is fixed.
 
+
 # DDPM General Explanation
 
 ![figure1](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/DDPM.png)
